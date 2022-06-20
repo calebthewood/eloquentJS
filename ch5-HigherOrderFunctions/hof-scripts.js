@@ -114,7 +114,18 @@ function everything(array, predicate) {
   return true;
 }
 
+/**Implement Array.every using Array.some */
+function everythingFromSomething(array, predicate) {
+  let every = true;
+  array.some((element) => {
+    if (!predicate(element)) {
+      every = false;
+    }
+  });
+  return every;
+}
+
 /** sample predicate fn */
 function isString(element) {
-  return typeof element === 'string'
+  return typeof element === 'string';
 }
