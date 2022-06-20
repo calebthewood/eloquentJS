@@ -4,7 +4,7 @@
 /******************************* Abstract functionality to utility functions */
 
 /** manual implementation of Array.reduce method */
-function reduce(array, combine, start=0) {
+function reduce(array, combine, start = 0) {
   let current = start;
   for (let element of array) {
     current = combine(current, element);
@@ -37,7 +37,7 @@ function countBy(items, groupName) {
     let name = groupName(item);
     let known = counts.findIndex(c => c.name == name);
     if (known == -1) {
-      counts.push({name, count: 1});
+      counts.push({ name, count: 1 });
     } else {
       counts[known].count++;
     }
@@ -71,15 +71,50 @@ function textScripts(text) {
   let scripts = countBy(text, char => {
     let script = characterScript(char.codePointAt(0));
     return script ? script.name : "none";
-  }).filter(({name}) => name != "none");
+  }).filter(({ name }) => name != "none");
 
-  let total = scripts.reduce((n, {count}) => n + count, 0);
+  let total = scripts.reduce((n, { count }) => n + count, 0);
   if (total == 0) return "No scripts found";
 
-  return scripts.map(({name, count}) => {
+  return scripts.map(({ name, count }) => {
     return `${Math.round(count * 100 / total)}% ${name}`;
   }).join(", ");
 }
 
 console.log(textScripts('英国的狗说"woof", 俄罗斯的狗说"тяв"'));
 // → 61% Han, 22% Latin, 17% Cyrillic
+
+/************************************************************* Exercises */
+/**
+ * Flattening
+ * uses reduce & concatenation to flatten an array of arrays
+ * ex: [[1, 2, 3], [4, 5], [6]] → [1, 2, 3, 4, 5, 6]
+ * */
+
+function flattening(arrays) {
+  return arrays.reduce((acc, curr) => acc.concat(curr));
+}
+
+let arrays = [[1, 2, 3], [4, 5], [6]];
+flattening(arrays);
+
+/** Implement Array.every as a function with a loop that
+ * takes an array and a predicate function.
+ */
+function everything(array, predicate) {
+  let i = 0;
+  let len = array.length;
+
+  while (i < len) {
+    if (!predicate(array[i])) {
+      return false;
+    }
+    i++;
+  }
+  return true;
+}
+
+/** sample predicate fn */
+function isString(element) {
+  return typeof element === 'string'
+}
