@@ -11,7 +11,7 @@ const roads = [
 ];
 
 /**
- *
+ *Converts an array of "to-from" elements to a graph
  */
 function buildGraph(edges) {
   let graph = Object.create(null);
@@ -28,6 +28,54 @@ function buildGraph(edges) {
   }
   return graph;
 }
-
 const roadGraph = buildGraph(roads);
-console.log("ROAD GRAPH ",roadGraph)
+
+
+/**
+ * VillageState: holds state and methods for the village
+ *    State:  this.place
+ *            this.parcels
+ *
+ *    Methods:  move
+ */
+class VillageState {
+  constructor(place, parcels) {
+    this.place = place;
+    this.parcels = parcels;
+  }
+
+  /**
+   *
+   * Checks whether there is a road going from current place to destination
+   * Then creates new state with destination as the Robot's new location
+   * Creates new parcel list, parcels that the robot is "carrying" are located
+   *  at the current place, and must be moved to the new place
+   * Parcels addressed to the new place are "delivered", removed from state
+   *  .map handles "moving", .filter handles "delivering"
+   *
+   * returns a new Village state
+   *
+   */
+  move(destination) {
+    if (!roadGraph[this.place].includes(destination)) {
+      return this;
+    } else {
+      let parcels = this.parcels.map(p => {
+        if (p.place != this.place) return p;
+        return { place: destination, address: p.address };
+      }).filter(p => p.place != p.address);
+      return new VillageState(destination, parcels);
+    }
+  }
+}
+
+let first = new VillageState(
+  "Post Office",
+  [{ place: "Post Office", address: "Alice's House" }]
+);
+
+let next = first.move("Alice's House");
+
+console.log(next.place);
+console.log(next.parcels);
+console.log(first.place);
