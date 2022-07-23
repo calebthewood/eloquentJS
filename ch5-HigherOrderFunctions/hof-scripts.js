@@ -98,7 +98,17 @@ function flattening(arrays) {
 let arrays = [[1, 2, 3], [4, 5], [6]];
 flattening(arrays);
 
-/** Implement Array.every as a function with a loop that
+/**
+ * Your Own Loop
+ * I'm not entirely sure what the intent of this problem is.
+ */
+function loop(value, test, update, body) {
+}
+
+
+/**
+ * Everything
+ * Implement Array.every as a function with a loop that
  * takes an array and a predicate function.
  */
 function everything(array, predicate) {
@@ -128,4 +138,12 @@ function everythingFromSomething(array, predicate) {
 /** sample predicate fn */
 function isString(element) {
   return typeof element === 'string';
+}
+
+/**
+ * Dominant Writing Direction
+ */
+
+function dominantWritingDirection() {
+
 }
