@@ -17,6 +17,22 @@ const mailRoute = [
   "Marketplace", "Post Office"
 ];
 
+// Village Graph
+// {
+//   "Alice's House": ["Bob's House", 'Cabin', 'Post Office'],
+//   "Bob's House": ["Alice's House", 'Town Hall'],
+//   "Cabin": ["Alice's House"],
+//   'Post Office': ["Alice's House", 'Marketplace'],
+//   'Town Hall': ["Bob's House", "Daria's House", 'Marketplace', 'Shop'],
+//   "Daria's House": ["Ernie's House", 'Town Hall'],
+//   "Ernie's House": ["Daria's House", "Grete's House"],
+//   "Grete's House": ["Ernie's House", 'Farm', 'Shop'],
+//   "Farm": ["Grete's House", 'Marketplace'],
+//   "Shop": ["Grete's House", 'Marketplace', 'Town Hall'],
+//   "Marketplace": ['Farm', 'Post Office', 'Shop', 'Town Hall'];
+// }
+
+
 /**
  *Converts an array of "to-from" elements to a graph.
 
@@ -38,8 +54,8 @@ function buildGraph(edges) {
   }
   return graph;
 }
-const roadGraph = buildGraph(roads);
 
+const roadGraph = buildGraph(roads);
 
 /**
  * VillageState: holds state and methods for the village
@@ -93,14 +109,16 @@ let first = new VillageState(
 function runRobot(state, robot, memory) {
   for (let turn = 0; ; turn++) {
     if (state.parcels.length == 0) {
-      console.log(`Done in ${turn} turns`);
-      break;
+      // console.log(`Done in ${turn} turns`);
+      return turn;
+      //break;
     }
     let action = robot(state, memory);
     state = state.move(action.direction);
     memory = action.memory;
-    console.log(`Moved to ${action.direction}`);
+    // console.log(`Moved to ${action.direction}`);
   }
+
 }
 
 /** Returns a random choice from an array */
@@ -125,6 +143,19 @@ VillageState.random = function (parcelCount = 5) {
     } while (place == address);
     parcels.push({ place, address });
   }
+  // console.log("Parcels: ", parcels);
+  return new VillageState("Post Office", parcels);
+};
+
+
+VillageState.test = function (parcelCount = 5) {
+  let parcels = [
+    { place: 'Marketplace', address: "Ernie's House" },
+    { place: 'Shop', address: "Bob's House" },
+    { place: "Grete's House", address: 'Farm' },
+    { place: 'Marketplace', address: "Grete's House" },
+    { place: "Alice's House", address: 'Shop' }
+  ];
   return new VillageState("Post Office", parcels);
 };
 
@@ -136,6 +167,8 @@ function routeRobot(state, memory) {
   return { direction: memory[0], memory: memory.slice(1) };
 }
 
+
+/******************************************************** Goal Oriented Robot */
 /**
  * keeps a work list. This is an array of places that should be explored next,
  * along with the route that got us there. Then operates by taking the next
@@ -170,11 +203,49 @@ function goalOrientedRobot({ place, parcels }, route) {
   }
   return { direction: route[0], memory: route.slice(1) };
 }
-runRobot(VillageState.random(), goalOrientedRobot, []);
+//runRobot(VillageState.random(), goalOrientedRobot, []);
 
 /************************************************************* Exercises */
 
-/** Robot Efficiency */
+/** Measuring a Roboto */
+//compareRobots(routeRobot, [], goalOrientedRobot, []);
+function compareRobots(rounds = 100) {
+  let goalBot = 0;
+  let randBot = 0;
+  let routBot = 0;
+
+  for (let i = 0; i < rounds; i++) {
+    let testState = VillageState.random();
+    goalBot += runRobot(testState, goalOrientedRobot, []);
+    randBot += runRobot(testState, randomRobot, []);
+    routBot += runRobot(testState, routeRobot, mailRoute);
+  }
+
+  const randDiff = Math.round((randBot / goalBot) * 100);
+  const routeDiff = Math.round((routBot / goalBot) * 100);
+  const routRandDiff = Math.round((randBot / routBot) * 100);
+
+  console.log("Goal Bot Avg: ", goalBot / 100);
+  console.log("Route Bot Avg: ", routBot / 100);
+  console.log("Random Bot Avg: ", randBot / 100);
+  console.log(`Goal bot is ${randDiff}% faster than random bot`);
+  console.log(`Goal bot is ${routeDiff}% faster than route bot`);
+  console.log(`Route bot is ${routRandDiff}% faster than random bot`);
+}
+
+compareRobots();
+
+function planRoute(graph, from, to) {
+
+}
+/** Robot Efficiency
+ *
+ * Robot considers all parcels when planning route
+*/
+
+function efficientRobot({ place, parcels }, route) {
+
+}
 
 /** Persistant Group */
 
