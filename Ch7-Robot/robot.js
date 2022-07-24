@@ -10,12 +10,6 @@ const roads = [
   "Marketplace-Town Hall", "Shop-Town Hall"
 ];
 
-const mailRoute = [
-  "Alice's House", "Cabin", "Alice's House", "Bob's House",
-  "Town Hall", "Daria's House", "Ernie's House",
-  "Grete's House", "Shop", "Grete's House", "Farm",
-  "Marketplace", "Post Office"
-];
 
 // Village Graph
 // {
@@ -106,6 +100,14 @@ let first = new VillageState(
 // console.log(next.parcels);
 // console.log(first.place);
 
+/** Runs a given robot
+ * Accepts state: an instance of VillageState
+ *         robot: a robot function
+ *         memory: array pf preplanned routes, or else empty if
+ *                  robot generates routes
+ *
+ * Terminates when all parcels from village state have been delivered
+ */
 function runRobot(state, robot, memory) {
   for (let turn = 0; ; turn++) {
     if (state.parcels.length == 0) {
@@ -120,6 +122,8 @@ function runRobot(state, robot, memory) {
   }
 
 }
+
+/*************************************************************** Random Robot */
 
 /** Returns a random choice from an array */
 function randomPick(array) {
@@ -158,6 +162,15 @@ VillageState.test = function (parcelCount = 5) {
   ];
   return new VillageState("Post Office", parcels);
 };
+
+/******************************************************* Route Oriented Robot */
+
+const mailRoute = [
+  "Alice's House", "Cabin", "Alice's House", "Bob's House",
+  "Town Hall", "Daria's House", "Ernie's House",
+  "Grete's House", "Shop", "Grete's House", "Farm",
+  "Marketplace", "Post Office"
+];
 
 /** A robot who follows the mail route */
 function routeRobot(state, memory) {
@@ -205,9 +218,9 @@ function goalOrientedRobot({ place, parcels }, route) {
 }
 //runRobot(VillageState.random(), goalOrientedRobot, []);
 
-/************************************************************* Exercises */
+/****************************************************************** Exercises */
 
-/** Measuring a Roboto */
+/** Measuring a Robot */
 //compareRobots(routeRobot, [], goalOrientedRobot, []);
 function compareRobots(rounds = 100) {
   let goalBot = 0;
@@ -225,8 +238,8 @@ function compareRobots(rounds = 100) {
   const routeDiff = Math.round((routBot / goalBot) * 100);
   const routRandDiff = Math.round((randBot / routBot) * 100);
 
-  console.log("Goal Bot Avg: ", goalBot / 100);
-  console.log("Route Bot Avg: ", routBot / 100);
+  console.log("Goal Bot Avg:   ", goalBot / 100);
+  console.log("Route Bot Avg:  ", routBot / 100);
   console.log("Random Bot Avg: ", randBot / 100);
   console.log(`Goal bot is ${randDiff}% faster than random bot`);
   console.log(`Goal bot is ${routeDiff}% faster than route bot`);
@@ -244,7 +257,10 @@ function planRoute(graph, from, to) {
 */
 
 function efficientRobot({ place, parcels }, route) {
-
+  // write out, exactly what each argument will be and what it does
+  // write out, what is returned (from this and other robot functions)
+  // this will give me a better idea of what is happening in this function,
+  // and what is happening in runRobot.
 }
 
 /** Persistant Group */
