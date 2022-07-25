@@ -3,22 +3,26 @@
 
 /** Persistant Group */
 class PGroup {
-  constructor() {
-    this.empty = [];
+  constructor(set) {
+    this.set = set;
   }
 
   add(element) {
-    return [...this.empty, element];
+    if (this.has(element)) return this
+    return new PGroup([...this.set, element]);
   }
 
   delete(element) {
-    return this.empty.filter(item => item !== element);
+    if (!this.has(element)) return this;
+    return new PGroup(this.set.filter(item => item !== element));
   }
 
   has(element) {
-    return this.empty.includes(element);
+    return this.set.includes(element);
   }
 }
+
+PGroup.empty = new PGroup([]);
 
 let a = PGroup.empty.add("a");
 let ab = a.add("b");
