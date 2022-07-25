@@ -118,9 +118,8 @@ function runRobot(state, robot, memory) {
     let action = robot(state, memory);
     state = state.move(action.direction);
     memory = action.memory;
-    // console.log(`Moved to ${action.direction}`);
+    console.log(`Moved to ${action.direction}`);
   }
-
 }
 
 /*************************************************************** Random Robot */
@@ -202,21 +201,26 @@ function findRoute(graph, from, to) {
 }
 
 /**
- * When route is empty, robot moves to either pick up the parcel or
- * deliver the parcel.
+ * Robot will attempt to deliver held parcels. If no parcel held,
+ * robot will go to the nearest pickup
  */
 function goalOrientedRobot({ place, parcels }, route) {
+
   if (route.length == 0) {
     let parcel = parcels[0];
+
     if (parcel.place != place) {
       route = findRoute(roadGraph, place, parcel.place);
+
     } else {
       route = findRoute(roadGraph, place, parcel.address);
+
     }
   }
+  console.log("route 0: ",route[0])
   return { direction: route[0], memory: route.slice(1) };
 }
-//runRobot(VillageState.random(), goalOrientedRobot, []);
+// runRobot(VillageState.random(), goalOrientedRobot, []);
 
 /****************************************************************** Exercises */
 
@@ -226,24 +230,27 @@ function compareRobots(rounds = 100) {
   let goalBot = 0;
   let randBot = 0;
   let routBot = 0;
+  let effiBot = 0;
 
   for (let i = 0; i < rounds; i++) {
     let testState = VillageState.random();
     goalBot += runRobot(testState, goalOrientedRobot, []);
     randBot += runRobot(testState, randomRobot, []);
     routBot += runRobot(testState, routeRobot, mailRoute);
+    effiBot += runRobot(testState, efficientRobot, []);
   }
 
   const randDiff = Math.round((randBot / goalBot) * 100);
   const routeDiff = Math.round((routBot / goalBot) * 100);
   const routRandDiff = Math.round((randBot / routBot) * 100);
 
+  console.log("Lazy Bot Avg:   ", effiBot / 100);
   console.log("Goal Bot Avg:   ", goalBot / 100);
   console.log("Route Bot Avg:  ", routBot / 100);
   console.log("Random Bot Avg: ", randBot / 100);
-  console.log(`Goal bot is ${randDiff}% faster than random bot`);
-  console.log(`Goal bot is ${routeDiff}% faster than route bot`);
-  console.log(`Route bot is ${routRandDiff}% faster than random bot`);
+  // console.log(`Goal bot is ${randDiff}% faster than random bot`);
+  // console.log(`Goal bot is ${routeDiff}% faster than route bot`);
+  // console.log(`Route bot is ${routRandDiff}% faster than random bot`);
 }
 
 compareRobots();
@@ -255,15 +262,27 @@ function planRoute(graph, from, to) {
  *
  * Robot considers all parcels when planning route
 */
-
 function efficientRobot({ place, parcels }, route) {
-  // write out, exactly what each argument will be and what it does
-  // write out, what is returned (from this and other robot functions)
-  // this will give me a better idea of what is happening in this function,
-  // and what is happening in runRobot.
-}
+  let tempRoute;
+  let routeLen = Infinity;
 
-/** Persistant Group */
+  if (route.length == 0) {
+    for (let parcel of parcels) {
+      if (parcel.place != place) {
+        tempRoute = findRoute(roadGraph, place, parcel.place);
+      } else {
+        tempRoute = findRoute(roadGraph, place, parcel.address);
+      }
+      if (tempRoute.length < routeLen) {
+        route = tempRoute;
+        routeLen = route.length;
+      }
+    }
+  }
+  return { direction: route[0], memory: route.slice(1) };
+}
+// runRobot(VillageState.random(), efficientRobot, []);
+
 
 
 
