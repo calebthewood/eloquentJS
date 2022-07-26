@@ -34,3 +34,9 @@ console.log(a.has("b"));
 // → false
 console.log(b.has("a"));
 // → false
+
+
+/* See link below for helpful explanation. I had a hard time getting the
+  implementation just right & figuring out how 'empty' factored into the
+  class.
+https://stackoverflow.com/questions/56160350/eloquent-javascript-persistent-group */
