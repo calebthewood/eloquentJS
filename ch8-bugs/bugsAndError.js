@@ -58,7 +58,7 @@ const box = {
   }
 };
 
-/** Calls a function when the box is unlocked */
+/** Accepts a function to call when the box is unlocked */
 function withBoxUnlocked(body) {
   const wasLocked = box.locked;
   if (wasLocked) box.unlock();
