@@ -5,7 +5,9 @@ Regex methods:
 .exec() returns object re the match or null
 .match() string method that does similar thing
 
-(+, *, ?, and {}) are greedy,
+Tips:
+(+, *, ?, and {}) are greedy, add ? to make them not greedy
+use ^ and $ to make sure an expression matches the whole line, not just part of it.
 
 Glossary:
 literal	        normal text character
@@ -153,31 +155,118 @@ let re3 = /^.*x/;
 //   John McCarthy
 //   Philip Wadler
 
-let s = "the cia and fbi";
-// log(s.replace(/\b(fbi|cia)\b/g,
-//             str => str.toUpperCase()));
-// → the CIA and FBI
+// let s = "the cia and fbi";
+// // log(s.replace(/\b(fbi|cia)\b/g,
+// //             str => str.toUpperCase()));
+// // → the CIA and FBI
 
-//subtracts 1 from every number and updates the correlated item if needed.
+// //subtracts 1 from every number and updates the correlated item if needed.
 
-let stock = "3 lemon, 4 cabbages, and 103 eggs";
+// let stock = "3 lemon, 4 cabbages, and 103 eggs";
 
-function minusOne(match, amount, unit) {
-  amount = Number(amount) - 1;
-  if (amount == 1) { // only one left, remove the 's'
-    unit = unit.slice(0, unit.length - 1);
-  } else if (amount == 0) {
-    amount = "no";
+// function minusOne(match, amount, unit) {
+//   amount = Number(amount) - 1;
+//   if (amount == 1) { // only one left, remove the 's'
+//     unit = unit.slice(0, unit.length - 1);
+//   } else if (amount == 0) {
+//     amount = "no";
+//   }
+//   return amount + " " + unit;
+// }
+// log(stock.replace(/(\d+) (\w+)/g, minusOne));
+// // → no lemon, 1 cabbage, and 100 eggs
+
+
+// /** Removes all .js comments from a string */
+// function stripComments(code) {
+//   return code.replace(/\/\/.*|\/\*[^]*?\*\//g, "");
+// }
+// console.log(stripComments("1 /* a */+/* b */ 1"));
+// // → 1 + 1
+
+// function parseINI(string) {
+//   let result = {};
+//   let section = result;
+//   string.split(/\r?\n/).forEach(line => {
+//     let match;
+//     if (match = line.match(/^(\w+)=(.*)$/)) {
+//       section[match[1]] = match[2];
+//     } else if (match = line.match(/^\[(.*)\]$/)) {
+//       section = result[match[1]] = {};
+//     } else if (!/^\s*(;.*)?$/.test(line)) {
+//       throw new Error("Line '" + line + "' is not valid");
+//     }
+//   });
+//   return result;
+// }
+
+// console.log(parseINI(`
+// name=Vasilis
+// [address]
+// city=Tessaloniki`));
+
+/****************************************************************** Exercises */
+
+/** Regexp Golf */
+
+// link provided an excellent base to build from:
+// https://stackoverflow.com/questions/4389644/regex-to-match-string-containing-two-names-in-any-order
+
+
+/* Fill in the regular expressions
+I don't fully understand the book's prompt here. From what I understand, the
+patterns I wrote satisfy the prompts, but they don't work for verify()
+*/
+// car and cat
+verify(/^(?=.*\bcar\b)(?=.*\bcat\b).*$/,
+  ["my car", "bad cats"],
+  ["camper", "high art"]);
+
+// pop and prop
+verify(/^(?=.*\bpop\b)(?=.*\bprop\b).*$/,
+  ["pop culture", "mad props"],
+  ["plop", "prrrop"]);
+
+// ferret, ferry, and ferrari
+verify(/^(?=.*\bferret\b)(?=.*\bferry\b)(?=.*\bferrari\b).*$/,
+  ["ferret", "ferry", "ferrari"],
+  ["ferrum", "transfer A"]);
+
+// Any word ending in ious
+log("ious  ", /^(?=.*ious\b).*$/.test("delicious hello world"));
+verify(/^(?=.*ious\b).*$/,
+  ["how delicious", "spacious room"],
+  ["ruinous", "consciousness"]);
+
+// A whitespace character followed by a period, comma, colon, or semicolon
+log("bad punc: ", /^(?=.*(\s[\.\,\;\:])).*$/.test(" , hello world"));
+verify(/^(?=.*(\s[\.\,\;\:])).*$/,
+  ["bad punctuation ."],
+  ["escape the period"]);
+
+// A word longer than six letters
+log("6+: ", /^(?=.*\b\w{6,}\b).*$/.test(" , hello gregarious world"));
+verify(/^(?=.*\b\w{6,}\b).*$/,
+  ["Siebentausenddreihundertzweiundzwanzig"],
+  ["no", "three small words"]);
+
+// A word without the letter e (or E)
+log("sans e: ", /^(?=.*\b([^ e])+\b).*$/gi.test(" , hello gregarious world"));
+verify(/^(?=.*\b([^ e])+\b).*$/gi,
+  ["red platypus", "wobbling nest"],
+  ["earth bed", "learning ape", "BEET"]);
+
+
+function verify(regexp, yes, no) {
+  // Ignore unfinished exercises
+  if (regexp.source == "...") return;
+  for (let str of yes) if (!regexp.test(str)) {
+    console.log(`Failure to match '${str}'`);
   }
-  return amount + " " + unit;
+  for (let str of no) if (regexp.test(str)) {
+    console.log(`Unexpected match for '${str}'`);
+  }
 }
-log(stock.replace(/(\d+) (\w+)/g, minusOne));
-// → no lemon, 1 cabbage, and 100 eggs
+/** Quoting Style */
 
-
-/** Removes all .js comments from a string */
-function stripComments(code) {
-  return code.replace(/\/\/.*|\/\*[^]*?\*\//g, "");
-}
-console.log(stripComments("1 /* a */+/* b */ 1"));
-// → 1 + 1
+/** Numbers Again */
