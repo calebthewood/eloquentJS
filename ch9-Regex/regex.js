@@ -4,6 +4,44 @@ Regex methods:
 .test() is the simplest way to check regex, returns true or false
 .exec() returns object re the match or null
 .match() string method that does similar thing
+
+(+, *, ?, and {}) are greedy,
+
+Glossary:
+literal	        normal text character
+[... ]          character class	matches any one of several characters
+dash (-)        between 2 chars in character class	indicates range of chars
+[^...]          negated character class	matches any char not listed
+dot (.)	        matches any character
+or, bar (|)	    separates alternative subexpressions
+
+anchor	        metacharacter matching a position
+(...)	          create subexpression (grouping)
+...?            zero or one occurences of previous item
+...*            zero or more occurences of previous item
+...+    	      at least one occurence of previous item
+^...	          begin of line (anchor)
+...$	          end of line (anchor)
+
+quantifiers     indicate number of occurences of previous item
+\w      	      part-of-word char [a-zA-Z0-9_]
+\W      	      non-word char [^w]
+\d      	      digit [0-9]
+\D      	      non digit [^0-9]
+\s      	      whitespace character [ \f\n\r\t\v]
+\S      	      non-whitespace character [^\s]
+
+escaping	      neutralizing a metacharacter (reducing it to text)
+\char           (if combination is not metadescriptive)	escaped char
+\t	            tab character
+\r	            return character
+\n	            newline character
+...{min,max}	  repeat previous at least min times, but not more than max times
+...{min,}	      repeat previous item at least min times
+...{num} 	      repeat previous item num times
+
+grouping	putting part of a regex between parentheses (creates a subexpression)
+\       followed by a digit	back reference to the digith subexpression (between parentheses)
 */
 
 const log = console.log;
@@ -91,11 +129,55 @@ const log = console.log;
 
 let animalCount = /\b\d+ (pig|cow|chicken)s?\b/;
 // find a digit followed by either pig(s), cow(s), OR chicken(s)
-log(animalCount.test("15 pigs")); //true
-log(animalCount.test("15 pigchickens")); //false
+// log(animalCount.test("15 pigs")); //true
+// log(animalCount.test("15 pigchickens")); //false
 
 let binaryOrHex = /\b([01]+b|[\da-f]+h|\d+)\b/;
 /* matches either a binary number followed by a b,
-a hexadecimal number followed by an h, or a decimal with no suffix
-*/
+a hexadecimal number followed by an h, or a decimal with no suffix */
 
+let re3 = /^.*x/;
+// matches the entire string up to the final x, finds x from the end.
+// counting from the end is called back tracking. Too much is bad.
+
+// g = global, find all matches, not just first.
+
+// log("papa".replace("p", "m"));
+// log("Borobudur".replace(/[ou]/, "a"));// → Barobudur
+// log("Borobudur".replace(/[ou]/g, "a"));// → Barabadar
+
+//Converts names from "lname, fname" → "fname lname"
+//log("Liskov, Barbara\nMcCarthy, John\nWadler, Philip"
+//   .replace(/(\w+), (\w+)/g, "$2 $1"));
+// → Barbara Liskov
+//   John McCarthy
+//   Philip Wadler
+
+let s = "the cia and fbi";
+// log(s.replace(/\b(fbi|cia)\b/g,
+//             str => str.toUpperCase()));
+// → the CIA and FBI
+
+//subtracts 1 from every number and updates the correlated item if needed.
+
+let stock = "3 lemon, 4 cabbages, and 103 eggs";
+
+function minusOne(match, amount, unit) {
+  amount = Number(amount) - 1;
+  if (amount == 1) { // only one left, remove the 's'
+    unit = unit.slice(0, unit.length - 1);
+  } else if (amount == 0) {
+    amount = "no";
+  }
+  return amount + " " + unit;
+}
+log(stock.replace(/(\d+) (\w+)/g, minusOne));
+// → no lemon, 1 cabbage, and 100 eggs
+
+
+/** Removes all .js comments from a string */
+function stripComments(code) {
+  return code.replace(/\/\/.*|\/\*[^]*?\*\//g, "");
+}
+console.log(stripComments("1 /* a */+/* b */ 1"));
+// → 1 + 1
