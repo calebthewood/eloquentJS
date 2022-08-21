@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise #3</title>
+</head>
+
+<body>
+
+  <p style="text-align: center; border: 2px solid black">
+    <img id="cat" src="./cat.png" style="position: relative">
+    <img id="hat" src="./hat.png" style="position: relative; width: 50px;">
+  </p>
+
+
+  <script>
+
+    let cat = document.querySelector("#cat");
+    let hat = document.querySelector("#hat");
+
+    let angle = Math.PI / 2;
+    function animate(time, lastTime) {
+      if (lastTime != null) {
+        angle += (time - lastTime) * 0.001;
+      }
+      cat.style.top = (Math.sin(angle) * 20) + "px"; // sin translates to y coord
+      cat.style.left = (Math.cos(angle) * 200) + "px"; // cos translates to x coord
+      hat.style.bottom = (Math.sin(angle) * 25) + "px";
+      hat.style.right = (Math.cos(angle) * 200) + angle + "px";
+      requestAnimationFrame(newTime => animate(newTime, time));
+    }
+    requestAnimationFrame(animate);
+  </script>
+
+</body>
+
+</html>
