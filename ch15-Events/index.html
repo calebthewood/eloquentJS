@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <button>Click me any way you want</button>
+  <script>
+    let button1 = document.querySelector("button");
+    button1.addEventListener("mousedown", event => {
+      if (event.button == 0) {
+        console.log("Left button");
+      } else if (event.button == 1) {
+        console.log("Middle button");
+      } else if (event.button == 2) {
+        console.log("Right button");
+      }
+    });
+
+  </script>
+
+
+  <p>A paragraph with a <button>button</button>.</p>
+  <script>
+    let para = document.querySelector("p");
+    let button2 = document.querySelector("button");
+    para.addEventListener("mousedown", () => {
+      console.log("Handler for paragraph.");
+    });
+    button2.addEventListener("mousedown", event => {
+      console.log("Handler for button.");
+      if (event.button == 2) event.stopPropagation();
+    });
+  </script>
+
+
+  <button>A</button>
+  <button>B</button>
+  <button>C</button>
+  <script>
+    document.body.addEventListener("click", event => {
+      if (event.target.nodeName == "BUTTON") {
+        console.log("Clicked", event.target.textContent);
+      }
+    });
+  </script>
+
+  <a href="https://developer.mozilla.org/">MDN</a>
+  <script>
+    let link = document.querySelector("a");
+    link.addEventListener("click", event => {
+      console.log("Nope.");
+      event.preventDefault();
+    });
+  </script>
+
+  <p>This page turns violet when you hold the V key.</p>
+  <script>
+    window.addEventListener("keydown", event => {
+      if (event.key == "v") {
+        document.body.style.background = "violet";
+      }
+      else if (event.key == "a") {
+        document.body.style.background = "amber";
+      }
+      else if (event.key == "b") {
+        document.body.style.background = "blue";
+      }
+      else if (event.key == "c") {
+        document.body.style.background = "cyan";
+      }
+      else if (event.key == "d") {
+        document.body.style.background = "dandelion";
+      }
+      else if (event.key == "z") {
+        document.body.style.background = "violet";
+      }
+      else if (event.key == "e") {
+        document.body.style.background = "evergreen";
+      }
+      else if (event.key == "f") {
+        document.body.style.background = "fuschia";
+      }
+      else if (event.key == "g") {
+        document.body.style.background = "green";
+      }
+      else if (event.key == "h") {
+        document.body.style.background = "honeydew";
+      }
+      else if (event.key == "i") {
+        document.body.style.background = "indigo";
+      }
+      else if (event.key == "j") {
+        document.body.style.background = "olive";
+      }
+      else if (event.key == "k") {
+        document.body.style.background = "Khaki";
+      }
+      else if (event.key == "l") {
+        document.body.style.background = "LightCoral";
+      }
+      else if (event.key == "m") {
+        document.body.style.background = "maroon";
+      }
+      else if (event.key == "n") {
+        document.body.style.background = "Navy";
+      }
+      else if (event.key == "o") {
+        document.body.style.background = "OliveDrab";
+      }
+      else if (event.key == "p") {
+        document.body.style.background = "peru";
+      }
+      else if (event.key == "q") {
+        document.body.style.background = "salmon";
+      }
+      else if (event.key == "r") {
+        document.body.style.background = "RebeccaPurple";
+      }
+      else if (event.key == "s") {
+        document.body.style.background = "SlateGrey";
+      }
+      else if (event.key == "t") {
+        document.body.style.background = "Teal";
+      }
+      else if (event.key == "u") {
+        document.body.style.background = "Thistle";
+      }
+      else if (event.key == "w") {
+        document.body.style.background = "WhiteSmoke";
+      }
+      else if (event.key == "y") {
+        document.body.style.background = "yellow";
+      } else {
+        document.body.style.background = "brown";
+      }
+    });
+    window.addEventListener("keyup", event => {
+      document.body.style.background = "";
+    });
+  </script>
+
+
+  <style>
+    body {
+      height: 200px;
+      background: beige;
+    }
+
+    .dot {
+      height: 8px;
+      width: 8px;
+      border-radius: 4px;
+      /* rounds corners */
+      background: blue;
+      position: absolute;
+    }
+  </style>
+  <script>
+    window.addEventListener("click", event => {
+      let dot = document.createElement("div");
+      dot.className = "dot";
+      dot.style.left = (event.pageX - 5) + "px";
+      dot.style.top = (event.pageY - 5) + "px";
+      document.body.appendChild(dot);
+    });
+  </script>
+</body>
+
+</html>
