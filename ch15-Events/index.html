@@ -172,6 +172,53 @@
       document.body.appendChild(dot);
     });
   </script>
+
+  <style>
+    #progress {
+      border-bottom: 2px solid blue;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  </style>
+
+<!-- Progress bar for top and side of page -->
+
+  <style>
+    #progress-x {
+      border-bottom: 2px solid blue;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    #progress-y {
+      border-right: 2px solid blue;
+      width: 2;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  </style>
+  <div id="progress-x"></div>
+  <div id="progress-y"></div>
+  <script>
+    // Create some content
+    document.body.appendChild(document.createTextNode(
+      "supercalifragilisticexpialidocious ".repeat(1000)));
+
+    let topBar = document.querySelector("#progress-x");
+    let sideBar = document.querySelector("#progress-y");
+    window.addEventListener("scroll", () => {
+      let maxY = document.body.scrollHeight - innerHeight;
+      let maxX = document.body.scrollHeight - innerWidth;
+
+      topBar.style.width = `${(pageYOffset / maxY) * 100}%`;
+      sideBar.style.height = `${(pageYOffset / maxX) * 100}%`;
+    });
+  </script>
 </body>
 
 </html>
