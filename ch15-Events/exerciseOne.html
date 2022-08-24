@@ -9,32 +9,28 @@
 </head>
 
 <body>
-  <p id="baloon">🎈</p>
-
+  <p id="balloon">🎈</p>
   <script>
     let size = 300;
-    let baloon = document.querySelector("#baloon");
-    let popped = false;
+    let balloon = document.querySelector("#balloon");
 
     window.addEventListener("keydown", event => {
       event.preventDefault();
-      if (!popped) {
+      if (size < 400) {
         if (event.key == "ArrowUp") {
           size += 10;
-          baloon.style.fontSize = `${size}%`;
+          balloon.style.fontSize = `${size}%`;
         } else if (event.key == "ArrowDown") {
           size -= 10;
-          baloon.style.fontSize = `${size}%`;
+          balloon.style.fontSize = `${size}%`;
         }
-        if (size > 400) {
-          baloon.innerHTML = "💥";
-          popped = true;
-        }
+      } else {
+        balloon.innerHTML = "💥"; //innerHTML is bad practice, consider replaceChild or textContent
       }
-
     });
-
   </script>
 </body>
 
 </html>
+
+
