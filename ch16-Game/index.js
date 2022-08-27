@@ -104,14 +104,69 @@ class Coin {
   get type() { return "coin"; }
 
   static create(pos) {
-    let basePos = pos.plus(new Vec(0.2,0.1));
+    let basePos = pos.plus(new Vec(0.2, 0.1));
     return new Coin(basePos, basePos,
-                    Math.random() * Math.PI * 2)
+      Math.random() * Math.PI * 2);
   }
 }
 
 Coin.prototype.size = new Vec(0.6, 0.6);
 
 const levelChars = {
+  ".": "empty",
+  "#": "wall",
+  "+": "lava",
+  "@": Player,
+  "o": Coin,
+  "=": Lava,
+  "|": Lava,
+  "v": Lava,
+};
 
+let simpleLevel = new Level(simpleLevelPlan);
+console.log(`${simpleLevel.width} by ${simpleLevel.height}`);
+
+function elt(name, attrs, ...children) {
+  let dom = document.createElement(name);
+  for (let attr of Object.keys(attrs)) {
+    dom.setAttribute(attr, attrs[attr]);
+  }
+  for (let child of children) {
+    dom.appendChild(child);
+  }
+  return dom;
 }
+
+class DOMDisplay {
+  constructor(parent, level) {
+    this.dom = elt("div", { class: "game" }, drawGrid(level));
+    this.actorLayer = null;
+    parent.appendChild(this.dom);
+  }
+
+  clear() { this.dom.remove(); }
+}
+
+const scale = 20;
+
+function drawGrid(level) {
+  return elt("table", {
+    class: "background",
+    style: `width: ${level.width * scale}px`
+  }, ...level.rows.map(row =>
+    elt("tr", { style: `height: ${scale}px` },
+      ...row.map(type => elt("td", { class: type })))
+  ));
+}
+
+function drawActors(actors) {
+  return elt("div", {}, ...actors.map(actor => {
+    let rect = elt("div", {class: `actor ${actor.type}`});
+    rect.style.width = `${actor.size.x * scale}px`;
+    rect.style.height = `${actor.size.y * scale}px`;
+    rect.style.left = `${actor.pos.x * scale}px`;
+    rect.style.top = `${actor.pos.y * scale}px`;
+    return rect;
+  }))
+}
+
