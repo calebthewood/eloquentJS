@@ -184,17 +184,15 @@ DOMDisplay.prototype.scrollPlayerIntoView = function (state) {
   let margin = width / 3;
 
   //the viewport
-  let left = this.dom.scrollLeft;
-  let right = left + width;
-  let top = thius.dom.scrollTop;
-  let bottom = top + height;
+  let left = this.dom.scrollLeft, right = left + width;
+  let top = this.dom.scrollTop, bottom = top + height;
 
   let player = state.player;
   let center = player.pos.plus(player.size.times(0.5))
     .times(scale);
 
   if (center.x < left + margin) {
-    this.dom.scrollLeft = center.x = margin;
+    this.dom.scrollLeft = center.x - margin;
   } else if (center.x > right - margin) {
     this.dom.scrollLeft = center.x + margin - width;
   }
@@ -247,7 +245,7 @@ State.prototype.update = function (time, keys) {
 function overlap(actor1, actor2) {
   return (
     actor1.pos.x + actor1.size.x > actor2.pos.x &&
-    actor1.posx < actor2.pos.x + actor2.size.x &&
+    actor1.pos.x < actor2.pos.x + actor2.size.x &&
     actor1.pos.y + actor1.size.y > actor2.pos.y &&
     actor1.pos.y < actor2.pos.y + actor2.size.y);
 }
@@ -256,7 +254,7 @@ Lava.prototype.collide = function (state) {
   return new State(state.level, state.actors, "lost");
 };
 
-Coin.prototype.collide = function (state) {
+Coin.prototype.collide = function(state) {
   let filtered = state.actors.filter(a => a != this);
   let status = state.status;
   if (!filtered.some(a => a.type == "coin")) status = "won";
@@ -279,7 +277,7 @@ Lava.prototype.update = function (time, state) {
 const wobbleSpeed = 8;
 const wobbleDist = 0.07;
 
-Coin.prototype.update = function (time) {
+Coin.prototype.update = function(time) {
   let wobble = this.wobble + time * wobbleSpeed;
   let wobblePos = Math.sin(wobble) * wobbleDist;
   return new Coin(this.basePos.plus(new Vec(0, wobblePos)),
@@ -329,7 +327,53 @@ function trackKeys(keys) {
 
 const arrowKeys = trackKeys(["ArrowLeft", "ArrowRight", "ArrowUp"]);
 
-let simpleLevel = new Level(simpleLevelPlan);
-let display = new DOMDisplay(document.body, simpleLevel);
-display.syncState(State.start(simpleLevel));
-console.log(`${simpleLevel.width} by ${simpleLevel.height}`);
+function runAnimation(frameFunc) {
+  let lastTime = null;
+  function frame(time) {
+    if (lastTime != null) {
+      let timeStep = Math.min(time - lastTime, 100) / 1000;
+      if (frameFunc(timeStep) === false) return;
+    }
+    lastTime = time;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+function runLevel(level, Display) {
+  let display = new Display(document.body, level);
+  let state = State.start(level);
+  let ending = 1;
+  return new Promise(resolve => {
+    runAnimation(time => {
+      state = state.update(time, arrowKeys);
+      display.syncState(state);
+      if (state.status == "playing") {
+        return true;
+      } else if (ending > 0) {
+        ending -= time;
+        return true;
+      } else {
+        display.clear();
+        resolve(state.status);
+        return false;
+      }
+    });
+  });
+}
+
+async function runGame(plans, Display) {
+  for (let level = 0; level < plans.length;) {
+    let status = await runLevel(new Level(plans[level]),
+      Display);
+    if (status == "won") level++;
+  }
+  console.log("You've won!");
+}
+
+runGame(GAME_LEVELS, DOMDisplay);
+
+// let simpleLevel = new Level(simpleLevelPlan);
+// let display = new DOMDisplay(document.body, simpleLevel);
+// display.syncState(State.start(simpleLevel));
+// console.log(`${simpleLevel.width} by ${simpleLevel.height}`);
