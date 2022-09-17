@@ -1,16 +1,5 @@
 "use strict";
 
-let simpleLevelPlan = `
-......................
-..#................#..
-..#..............=.#..
-..#.........o.o....#..
-..#.@......#####...#..
-..#####............#..
-......#++++++++++++#..
-......##############..
-......................`;
-
 class Level {
   constructor(plan) {
     let rows = plan.trim().split("\n").map(l => [...l]);
@@ -72,6 +61,24 @@ class Player {
 
 Player.prototype.size = new Vec(0.8, 1.5);
 
+const monsterSpeed = 4;
+class Monster {
+  constructor(pos, speed) {
+    this.pos = pos;
+    this.speed = speed;
+  }
+  get type() { return "monster"; }
+
+  static create(pos) {
+    return new Monster(pos.plus(new Vec(0, -1)), new Vec(0, 0));
+  }
+
+}
+
+Monster.prototype.size = new Vec(1.2, 2);
+
+
+
 class Lava {
   constructor(pos, speed, reset) {
     this.pos = pos;
@@ -93,7 +100,6 @@ class Lava {
 }
 
 Lava.prototype.size = new Vec(1, 1);
-
 class Coin {
   constructor(pos, basePos, wobble) {
     this.pos = pos;
@@ -112,19 +118,7 @@ class Coin {
 
 Coin.prototype.size = new Vec(0.6, 0.6);
 
-const levelChars = {
-  ".": "empty",
-  "#": "wall",
-  "+": "lava",
-  "@": Player,
-  "o": Coin,
-  "=": Lava,
-  "|": Lava,
-  "v": Lava,
-};
-
 // let simpleLevel = new Level(simpleLevelPlan);
-
 
 function elt(name, attrs, ...children) {
   let dom = document.createElement(name);
@@ -254,11 +248,21 @@ Lava.prototype.collide = function (state) {
   return new State(state.level, state.actors, "lost");
 };
 
-Coin.prototype.collide = function(state) {
+Coin.prototype.collide = function (state) {
   let filtered = state.actors.filter(a => a != this);
   let status = state.status;
   if (!filtered.some(a => a.type == "coin")) status = "won";
   return new State(state.level, filtered, status);
+};
+
+Monster.prototype.collide = function (state) {
+  let player = state.player;
+  if (player.pos.y + player.size.y < this.pos.y + 0.5) {
+    let filtered = state.actors.filter(a => a != this);
+    return new State(state.level, filtered, state.status);
+  } else {
+    return new State(state.level, state.actors, "lost");
+  }
 };
 
 /* ******************************************** Actor Updates */
@@ -277,7 +281,7 @@ Lava.prototype.update = function (time, state) {
 const wobbleSpeed = 8;
 const wobbleDist = 0.07;
 
-Coin.prototype.update = function(time) {
+Coin.prototype.update = function (time) {
   let wobble = this.wobble + time * wobbleSpeed;
   let wobblePos = Math.sin(wobble) * wobbleDist;
   return new Coin(this.basePos.plus(new Vec(0, wobblePos)),
@@ -308,6 +312,30 @@ Player.prototype.update = function (time, state, keys) {
     ySpeed = 0;
   }
   return new Player(pos, new Vec(xSpeed, ySpeed));
+};
+
+
+//update methods here are used to compute Monster's new state and pos after a given timestep.
+Monster.prototype.update = function (time, state) {
+  console.log(this.speed)
+  let player = state.player;
+  //todo: if player distance less than xyz, initiate movement
+  let xSpeed = (player.pos.x < this.pos.x ? -1 : 1) * time * monsterSpeed;
+  let pos = this.pos;
+  let movedX = pos.plus(new Vec(xSpeed, 0));
+  if (!state.level.touches(movedX, this.size, "wall")) {
+    pos = movedX;
+  }
+
+  let ySpeed = this.speed.y + time * gravity;
+  let movedY = pos.plus(new Vec(0, ySpeed * time));
+  if (!state.level.touches(movedY, this.size, "wall")) {
+    pos = movedY;
+  } else {
+    ySpeed = 0;
+  }
+  // let newPos = new Vec(pos.x + xSpeed, ySpeed);
+  return new Monster(pos, new Vec(xSpeed, ySpeed));
 };
 
 /* ******************************************** Tracking Keys */
@@ -362,11 +390,24 @@ function runLevel(level, Display) {
   });
 }
 
+const levelChars = {
+  ".": "empty",
+  "#": "wall",
+  "+": "lava",
+  "@": Player,
+  "o": Coin,
+  "=": Lava,
+  "|": Lava,
+  "v": Lava,
+  "M": Monster,
+};
+
 async function runGame(plans, Display) {
   for (let level = 0; level < plans.length;) {
     let status = await runLevel(new Level(plans[level]),
       Display);
     if (status == "won") level++;
+    console.log("runGame");
   }
   console.log("You've won!");
 }
@@ -377,3 +418,5 @@ runGame(GAME_LEVELS, DOMDisplay);
 // let display = new DOMDisplay(document.body, simpleLevel);
 // display.syncState(State.start(simpleLevel));
 // console.log(`${simpleLevel.width} by ${simpleLevel.height}`);
+
+

@@ -37,6 +37,10 @@
   background: rgb(64, 64, 64);
 }
 
+.monster {
+  background: purple
+}
+
 /* Player Status */
 
 .lost .player {
