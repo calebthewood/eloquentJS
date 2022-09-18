@@ -3,7 +3,8 @@
 > “All reality is a game.” - *Iain Banks, The Player of Games*
 >
 
-![Screenshot](public/screenshot.png)
+<img src="public/screenshot.png" width="300">
+
 
 The main goal of this project is to get deep into the JavaScript and DOM APIs, while also having a bit of fun. Much of this comes from chapter 16 of Marijn Haverbeke’s Eloquent JavaScript, which is itself based on the game [Dark Blue](https://www.lessmilk.com/dark-blue/). I'll continue iterating on it, and see where it takes me.
 
@@ -11,7 +12,7 @@ The game will be drawn and rendered in the DOM, not the most performant for more
 
 ## How to Play
 
-![ScreenRecording](public/ScreenRecording.gif)
+<img src="public/ScreenRecording.gif" width="300">
 *the above gif moves much slower than the game.*
 
 The player is controlled using event listeners on the arrows and/or ‘wasd’ keydowns. Player takes out baddies by jumping on their heads. The game is won when all coins are collected, or lost if the user touches lava or a monster.
