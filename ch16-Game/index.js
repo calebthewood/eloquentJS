@@ -19,6 +19,14 @@ class Level {
   }
 }
 
+
+/**
+ * State:
+ *  level: current map being played - string
+ *  actors: list of all actors in state - array
+ *  status: current status of the game.
+ *          playing, lost, paused
+ */
 class State {
   constructor(level, actors, status) {
     this.level = level;
@@ -236,7 +244,7 @@ State.prototype.update = function (time, keys) {
     if (actor != player && overlap(actor, player)) {
       newState = actor.collide(newState);
     }
-    // monster death by lava
+    // monster death by lava, needs improvement
     if (actor.type === "monster") {
       if (this.level.touches(actor.pos, actor.size, "lava")) {
         newState = actor.collide(newState);
@@ -330,7 +338,7 @@ Player.prototype.update = function (time, state, keys) {
 Monster.prototype.update = function (time, state) {
   let player = state.player;
   let xSpeed = 0
-  //todo: if player distance less than xyz, initiate movement
+  //todo: current bug when user is directly over monster
   if (this.sensesActor(player)) {
     xSpeed = (player.pos.x < this.pos.x ? -1 : 1) * time * monsterSpeed;
   }
@@ -347,7 +355,6 @@ Monster.prototype.update = function (time, state) {
   } else {
     ySpeed = 0;
   }
-  // let newPos = new Vec(pos.x + xSpeed, ySpeed);
   return new Monster(pos, new Vec(xSpeed, ySpeed));
 };
 
@@ -363,6 +370,10 @@ function trackKeys(keys) {
   }
   window.addEventListener("keydown", track);
   window.addEventListener("keyup", track);
+  down.unregister = () => {
+    window.removeEventListener("keydown", track);
+    window.removeEventListener("keyup", track);
+  }
   return down;
 }
 
@@ -385,8 +396,30 @@ function runLevel(level, Display) {
   let display = new Display(document.body, level);
   let state = State.start(level);
   let ending = 1;
+  let running = "yes";
+
   return new Promise(resolve => {
-    runAnimation(time => {
+    function escHandler(event) {
+      if (event.key != "Escape") return;
+      event.preventDefault();
+      if (running == "no") {
+        running = "yes";
+        runAnimation(frame);
+      } else if (running == "yes") {
+        running = "pausing";
+      } else {
+        running = "yes";
+      }
+    }
+    window.addEventListener("keydown", escHandler);
+    let arrowKeys = trackKeys(["ArrowLeft", "ArrowRight", "ArrowUp"]);
+
+    function frame(time) {
+      if (running == "pausing") {
+        running = "no";
+        return false;
+      }
+
       state = state.update(time, arrowKeys);
       display.syncState(state);
       if (state.status == "playing") {
@@ -396,10 +429,13 @@ function runLevel(level, Display) {
         return true;
       } else {
         display.clear();
-        resolve(state.status);
+        window.removeEventListener("keydown", escHandler);
+        arrowKeys.unregister();
+        resolve(state.status)
         return false;
       }
-    });
+    }
+    runAnimation(frame);
   });
 }
 
@@ -416,13 +452,19 @@ const levelChars = {
 };
 
 async function runGame(plans, Display) {
-  for (let level = 0; level < plans.length;) {
-    let status = await runLevel(new Level(plans[level]),
-      Display);
-    if (status == "won") level++;
-    console.log("runGame");
+  let lives = 3;
+  for (let level = 0; level < plans.length && lives > 0;) {
+    console.log(`Level ${level + 1}, lives: ${lives}`);
+    let status = await runLevel(new Level(plans[level]), Display);
+
+    if (status == "won") level += 1;
+    else lives -= 1;
   }
-  console.log("You've won!");
+  if (lives > 0) {
+    console.log("You've Won!");
+  } else {
+    console.log("Game Over");
+  }
 }
 
 runGame(GAME_LEVELS, DOMDisplay);
