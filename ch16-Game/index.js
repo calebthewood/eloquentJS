@@ -73,11 +73,14 @@ class Monster {
     return new Monster(pos.plus(new Vec(0, -1)), new Vec(0, 0));
   }
 
+  /** Determines when monster will move towards player */
+sensesActor(actor, distance = 10) {
+  return Math.abs(this.pos.x - actor.pos.x) < distance;
+}
+
 }
 
 Monster.prototype.size = new Vec(1.2, 2);
-
-
 
 class Lava {
   constructor(pos, speed, reset) {
@@ -225,6 +228,7 @@ State.prototype.update = function (time, keys) {
 
   let player = newState.player;
   if (this.level.touches(player.pos, player.size, "lava")) {
+    // implementing "lives" might go here.
     return new State(this.level, actors, "lost");
   }
 
@@ -232,7 +236,13 @@ State.prototype.update = function (time, keys) {
     if (actor != player && overlap(actor, player)) {
       newState = actor.collide(newState);
     }
+    // monster death by lava
+    if (actor.type === "monster") {
+      if (this.level.touches(actor.pos, actor.size, "lava")) {
+        newState = actor.collide(newState);
+      }
   }
+}
   return newState;
 };
 
@@ -243,6 +253,7 @@ function overlap(actor1, actor2) {
     actor1.pos.y + actor1.size.y > actor2.pos.y &&
     actor1.pos.y < actor2.pos.y + actor2.size.y);
 }
+
 
 Lava.prototype.collide = function (state) {
   return new State(state.level, state.actors, "lost");
@@ -317,10 +328,12 @@ Player.prototype.update = function (time, state, keys) {
 
 //update methods here are used to compute Monster's new state and pos after a given timestep.
 Monster.prototype.update = function (time, state) {
-  console.log(this.speed)
   let player = state.player;
+  let xSpeed = 0
   //todo: if player distance less than xyz, initiate movement
-  let xSpeed = (player.pos.x < this.pos.x ? -1 : 1) * time * monsterSpeed;
+  if (this.sensesActor(player)) {
+    xSpeed = (player.pos.x < this.pos.x ? -1 : 1) * time * monsterSpeed;
+  }
   let pos = this.pos;
   let movedX = pos.plus(new Vec(xSpeed, 0));
   if (!state.level.touches(movedX, this.size, "wall")) {
