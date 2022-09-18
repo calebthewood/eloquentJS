@@ -1,6 +1,6 @@
 body {
-  background: #2c3e50;
-  color: white;
+  background: #212121;
+  color: ivory;
   font-family: Arial, Helvetica, sans-serif;
 }
 #legend {
@@ -10,5 +10,5 @@ body {
 }
 span {
   font-size: small;
-  color: white;
+  color: ivory;
 }
