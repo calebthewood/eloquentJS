@@ -12,8 +12,9 @@ The game will be drawn and rendered in the DOM, not the most performant for more
 
 ## How to Play
 
-<img src="public/ScreenRecording.gif" width="300">
-*the above gif moves much slower than the game.*
+<img src="public/ScreenRecording.gif" width="500">
+
+*the above gif moves much slower than the game*
 
 The player is controlled using event listeners on the arrows and/or ‘wasd’ keydowns. Player takes out baddies by jumping on their heads. The game is won when all coins are collected, or lost if the user touches lava or a monster.
 
