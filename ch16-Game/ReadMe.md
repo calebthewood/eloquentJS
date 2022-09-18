@@ -1,14 +1,54 @@
+<div id="top"></div>
+
 # Project: Building a Platform Game
 
 > “All reality is a game.” - *Iain Banks, The Player of Games*
 >
 
+
+
 <img src="public/screenshot.png" width="300">
 
 
+
+<!-- TABLE OF CONTENTS -->
+<br>
+<br>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#how-to-play">How to Play</a>
+    </li>
+    <li><a href="#level-template">Level Template</a></li>
+    <li><a href="#holding-state">Holding State</a></li>
+    <li><a href="#handling-actors">Handling Actors</a></li>
+    <li><a href="#drawing-the-game">Drawing the Game</a></li>
+    <li><a href="#handling-movement">Handling Movement</a></li>
+    <li><a href="#updating-actors">Updating Actors</a></li>
+    <li><a href="#adding-a-monster">Adding a Monster</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+  </ol>
+<br>
+<br>
+
+
+## About
+
 The main goal of this project is to get deep into the JavaScript and DOM APIs, while also having a bit of fun. Much of this comes from chapter 16 of Marijn Haverbeke’s Eloquent JavaScript, which is itself based on the game [Dark Blue](https://www.lessmilk.com/dark-blue/). I'll continue iterating on it, and see where it takes me.
 
-The game will be drawn and rendered in the DOM, not the most performant for more complex games, but totally fine for something like this.
+The game will is drawn and rendered in the DOM, not the most performant for more complex games, but totally fine for something like this.
+<br>
+## Built With
+
+* [JavaScript](https://www.javascript.com/)
+* [HTML & CSS](https://html.spec.whatwg.org/)
+<br>
 
 ## How to Play
 
@@ -19,6 +59,7 @@ The game will be drawn and rendered in the DOM, not the most performant for more
 The player is controlled using event listeners on the arrows and/or ‘wasd’ keydowns. Player takes out baddies by jumping on their heads. The game is won when all coins are collected, or lost if the user touches lava or a monster.
 
 The rest of this ReadMe is dedicated to walking through the implementation.
+<br>
 
 ## Level Template
 
@@ -50,6 +91,7 @@ let simpleLevelPlan = `
 ......##############..
 ......................`;
 ```
+<br>
 
 ## Reading a Template
 
@@ -81,6 +123,7 @@ class Level {
   }
 }
 ```
+<br>
 
 ## Holding State
 
@@ -102,6 +145,7 @@ class State {
   }
 }
 ```
+<br>
 
 ## Handling Actors
 
@@ -187,6 +231,7 @@ class Coin {
 
 Coin.prototype.size = new Vec(0.6, 0.6);
 ```
+<br>
 
 ## Drawing the Game
 
@@ -371,8 +416,9 @@ let simpleLevel = new Level(simpleLevelPlan);
 let display = new DOMDisplay(document.body, simpleLevel);
 display.syncState(State.start(simpleLevel));
 ```
+<br>
 
-# Handling Movement
+## Handling Movement
 
 Motion and collision is a huge topic, there’s sophisticated methods for modeling how to move a player through an environment, we’re not doing that here. Before moving the actor, we’ll check to see if the next movement is valid (it doesn’t take us into a wall), if valid we’ll move there, if not then the move gets cancelled.
 
@@ -447,6 +493,7 @@ Coin.prototype.collide = function(state) {
   return new State(state.level, filtered, status);
 };
 ```
+<br>
 
 ## Updating Actors
 
@@ -542,10 +589,12 @@ function runAnimation(frameFunc) {
   requestAnimationFrame(frame)
 }
 ```
+<br>
 
 ## Adding a Monster
 
 In the monster’s function we grab the player currently in state, we’ll be using the player state to inform the monster’s movement. In the ternary if the plater has a lower x coordinate, ie: to the left of the monster, then we’ll decrement the monster’s x, otherwise we increment (move right). This is fine for now, but later we would want to make the monster’s movement more sophisticated. Perhaps by giving it one behavior while the player is out of range, and another behavior once the player has approached the monster. Currently when our monster hits a wall, it stays put. I would like to borrow the lava behavior, to maybe give our monster some back and forth movement.
+<br>
 
 **Updating Monster**
 
@@ -560,6 +609,7 @@ update(time, state) {
 ```
 
 Once again, we’ll grab the player. Currently the monster can only handle collisions with a vertical wall, and with the player. If the monster collides with a player we check to see if the the bottom of the player is close to the top of the monster, if so then we filter the monster out from the list of actors currently in state. If not, then the player has met and unfortunate end, and we update the State status to lost.
+<br>
 
 **Handling Collisions**
 
@@ -575,10 +625,14 @@ collide(state) {
       }
     }
 ```
+<br>
 
-## Coming soon:
-1. Updated monster behavior. They now only move towards the player once you come within a certain viscinity.
+## Roadmap
+
+Plans for future features and fixes
+1. Updated monster behavior. They now only move towards the player once you come within a certain viscinity
 2. Pause feature
 3. Lives
 4. Additional monster behaviors
 5. Pixel art, if time allows...
+6. Some parts of the guide need more explanation
