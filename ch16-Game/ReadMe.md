@@ -1,6 +1,6 @@
 <div id="top"></div>
 
-# Project: Building a Platform Game
+# Building a Platform Game in JavaScript
 
 > “All reality is a game.” - *Iain Banks, The Player of Games*
 >
@@ -35,14 +35,13 @@
     <li><a href="#roadmap">Roadmap</a></li>
   </ol>
 <br>
-<br>
 
 
 ## About
 
 The main goal of this project is to get deep into the JavaScript and DOM APIs, while also having a bit of fun. Much of this comes from chapter 16 of Marijn Haverbeke’s Eloquent JavaScript, which is itself based on the game [Dark Blue](https://www.lessmilk.com/dark-blue/). I'll continue iterating on it, and see where it takes me.
 
-The game will is drawn and rendered in the DOM, not the most performant for more complex games, but totally fine for something like this.
+The game is drawn and rendered in the DOM, not the most performant for more complex games, but totally fine for something like this. I'm also planning to shift to using canvas, although I expect to spin out a new repo when I get to that point, and leave this as is, divs and all.
 <br>
 ## Built With
 
