@@ -631,7 +631,11 @@ collide(state) {
 Plans for future features and fixes
 1. Updated monster behavior. They now only move towards the player once you come within a certain viscinity
 2. Pause feature
+  - basic pause added, press 'esc'
+  - pause text needed
 3. Lives
+ - basic lives implemented
+ - display needed
 4. Additional monster behaviors
 5. Pixel art, if time allows...
 6. Some parts of the guide need more explanation
