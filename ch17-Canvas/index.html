@@ -226,6 +226,8 @@
         cx10.drawImage(img, x, 10);
       }
     });
+    /* So here we open an image, then once it has loaded we draw it as
+    we move left, one hat every 30 pixels. */
   </script>
 
   <p>Fractals</p>
@@ -234,7 +236,7 @@
     let cx9 = document.querySelector("#fractal").getContext("2d");
     function branch(length, angle, scale) {
       cx9.fillRect(0, 0, 1, length);
-      if (length < 10) return;
+      if (length < 8) return;
       cx9.save();
       cx9.translate(0, length);
       cx9.rotate(-angle);
@@ -247,6 +249,43 @@
     branch(60, 0.5, 0.8);
   </script>
 
+
+
+
+  <p>Animating a Sprite</p>
+  <canvas id="sprite"></canvas>
+  <script>
+    function flipHorizontally(context, around) {
+      context.translate(around, 0);
+      context.scale(-1, 1);
+      context.translate(-around, 0);
+    }
+
+    let cx11 = document.querySelector("#sprite").getContext("2d");
+    let img2 = document.createElement("img");
+    img2.src = "img/player.png";
+    let spriteW = 48, spriteH = 60;
+    img2.addEventListener("load", () => {
+      let cycle = 0;
+      setInterval(() => {
+        cx11.clearRect(0, 0, spriteW, spriteH);
+        cx11.drawImage(img2,
+          //source rectangle
+          cycle * spriteW, 0, spriteW, spriteH,
+          // destination rectangle
+          0, 0, spriteW, spriteH);
+        cycle = (cycle + 1) % 8;
+
+        // this isn't drawing a new animation from scratch, it mirrors the existing context.
+        flipHorizontally(cx11, 100 + spriteW / 2)
+
+      }, 120);
+
+
+    });
+
+
+  </script>
 </body>
 
 </html>
