@@ -59,7 +59,7 @@
     let move = 10;
     let cx2 = document.querySelector("#path").getContext("2d");
     cx2.beginPath();
-    for (let y = 20; y < 100; y += 2) {
+    for (let y = 20; y < 100; y += 3) {
       cx2.moveTo(move, y);
       cx2.lineTo(line, y);
       move+=2;
@@ -68,6 +68,21 @@
     cx2.stroke();
   </script>
 
+  <p>Filling a Path</p>
+  <canvas id="filled-path"></canvas>
+  <script>
+    let cx20 = document.querySelector("#filled-path").getContext("2d");
+    cx20.beginPath();
+    cx20.moveTo(50, 10);
+    cx20.lineTo(10, 70);
+    cx20.lineTo(90, 70);
+    // Use commented out lines below to see the shape prior to filling in.
+    // cx20.lineWidth = 2
+    // cx20.stroke()
+    cx20.fill();
+    // closePath will draw a line to connect the start and end of a path
+    // cx20.closePath()
+  </script>
 
 
 
