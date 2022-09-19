@@ -62,7 +62,7 @@
     for (let y = 20; y < 100; y += 3) {
       cx2.moveTo(move, y);
       cx2.lineTo(line, y);
-      move+=2;
+      move += 2;
       line += 4;
     }
     cx2.stroke();
@@ -92,7 +92,7 @@
     let cir = document.querySelector("#circle").getContext("2d");
     cir.scale(3, .5);
     cir.beginPath();
-    cir.arc(50,50,40,0,7);
+    cir.arc(50, 50, 40, 0, 7);
     cir.lineWidth = 3;
     cir.stroke();
   </script>
@@ -124,9 +124,8 @@
     let cx4 = document.querySelector("#quadratic").getContext("2d");
     cx4.beginPath();
     cx4.moveTo(10, 90);
-    // control = 60,90 goal = 90,90
-
-    cx4.quadraticCurveTo(60, 10, 90, 90);
+    // control = 60,10 goal = 90,90
+    cx4.quadraticCurveTo(60, 25, 90, 80);
     cx4.lineTo(60, 10);
     cx4.closePath();
     cx4.stroke();
@@ -207,12 +206,27 @@
   <canvas id="text"></canvas>
   <script>
     let cx8 = document.querySelector("#text").getContext("2d");
-    cx8.font = "28px Georgia";
-    cx8.fillStyle = 'fuschia';
-    cx8.fillText("I can draw text, too!", 10, 50);
+    cx8.font = "italic 28px Georgia";
+    cx8.fillStyle = "goldenrod";
+    // cx8.fillText("I can draw text, too!", 10, 50);
+    cx8.strokeText("I can draw text, too!", 10, 50);
   </script>
 
-
+  <p>Images</p>
+  <canvas id="images"></canvas>
+  <script>
+    // Note that here we are loading an image which is not immediately available
+    // to draw on, so we place an event listener to wait for the image to load
+    // before running a function to draw our image.
+    let cx10 = document.querySelector("#images").getContext("2d");
+    let img = document.createElement("img");
+    img.src = "img/hat.png"; //I downloaded the wrong hat png lol
+    img.addEventListener("load", () => {
+      for (let x = 10; x < 200; x += 30) {
+        cx10.drawImage(img, x, 10);
+      }
+    });
+  </script>
 
   <p>Fractals</p>
   <canvas id="fractal" width="600" height="300"></canvas>
