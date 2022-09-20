@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 18 HTTPS & Forms</title>
+</head>
+
+<body>
+
+
+  <h1>Forms</h1>
+
+  <p>displays the value of the binary field selected in decimal</p>
+  <select multiple>
+    <option value="1">0001</option>
+    <option value="2">0010</option>
+    <option value="3">0100</option>
+    <option value="4">1000</option>
+  </select> = <span id="output">0</span>
+
+  <script>
+    let select = document.querySelector("select");
+    let output = document.querySelector("#output");
+    select.addEventListener("change", () => {
+      let number = 0;
+      for (let option of Array.from(select.options)) {
+        if (option.selected) {
+          number += Number(option.value);
+        }
+      }
+      output.textContent = number;
+    });
+  </script>
+
+  <br>
+  <br>
+
+  <p>Logs the file name and type of selected file</p>
+  <input id="fileInput" type="file">
+
+  <script>
+    let input = document.querySelector("#fileInput");
+    input.addEventListener("change", () => {
+      if (input.files.length > 0) {
+        let file = input.files[0];
+        console.log("You chose ", file.name);
+        if (file.type) console.log("It has type", file.type);
+      }
+    });
+  </script>
+  <br>
+  <br>
+  <p>Logs the beginning of multiple files</p>
+  <input id="multipleFile" type="file" multiple>
+
+  <script>
+    let input1 = document.querySelector("#multipleFile");
+    input1.addEventListener("change", () => {
+      for (let file of Array.from(input1.files)) {
+        let reader = new FileReader();
+        reader.addEventListener("load", () => {
+          console.log("File", file.name, "starts with",
+          reader.result.slice(0, 20));
+        });
+        reader.readAsText(file);
+      }
+    });
+
+  </script>
+</body>
+
+</html>
