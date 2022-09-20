@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+
+
+<textarea id="code">return "hi";</textarea>
+<button id="button">Run</button>
+<pre id="output"></pre>
+
+<script>
+  let code = document.querySelector("#code");
+  let submit = document.querySelector("#button");
+  let display = document.querySelector("#output");
+
+  submit.addEventListener("click", () => {
+  	display.textContent = Function(code.textContent)();
+  });
+</script>
+
+</body>
+</html>
