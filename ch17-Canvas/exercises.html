@@ -90,20 +90,20 @@
     drawSpiral();
 
 
-    //Sotuion
-    function spiral(x, y) {
-      let radius = 50, xCenter = x + radius, yCenter = y + radius;
-      cx.beginPath();
-      cx.moveTo(xCenter, yCenter);
-      for (let i = 0; i < 300; i++) {
-        let angle = i * Math.PI / 30;
-        let dist = radius * i / 300;
-        cx.lineTo(xCenter + Math.cos(angle) * dist,
-          yCenter + Math.sin(angle) * dist);
-      }
-      cx.stroke();
-    }
-    spiral(340, 20);
+    //Solution
+    // function spiral(x, y) {
+    //   let radius = 50, xCenter = x + radius, yCenter = y + radius;
+    //   cx.beginPath();
+    //   cx.moveTo(xCenter, yCenter);
+    //   for (let i = 0; i < 300; i++) {
+    //     let angle = i * Math.PI / 30;
+    //     let dist = radius * i / 300;
+    //     cx.lineTo(xCenter + Math.cos(angle) * dist,
+    //       yCenter + Math.sin(angle) * dist);
+    //   }
+    //   cx.stroke();
+    // }
+    // spiral(340, 20);
 
   </script>
 
@@ -113,20 +113,109 @@
     let c5 = document.getElementById("star").getContext("2d");
     // Solution
     function star(x, y) {
-    let radius = 50, xCenter = x + radius, yCenter = y + radius;
-    c5.beginPath();
-    c5.moveTo(xCenter + radius, yCenter);
-    for (let i = 1; i <= 8; i++) {
-      let angle = i * Math.PI / 4;
-      c5.quadraticCurveTo(xCenter, yCenter,
-                          xCenter + Math.cos(angle) * radius,
-                          yCenter + Math.sin(angle) * radius);
+      let radius = 50, xCenter = x + radius, yCenter = y + radius;
+      c5.beginPath();
+      c5.moveTo(xCenter + radius, yCenter);
+      for (let i = 1; i <= 8; i++) {
+        let angle = i * Math.PI / 4;
+        c5.quadraticCurveTo(xCenter, yCenter,
+          xCenter + Math.cos(angle) * radius,
+          yCenter + Math.sin(angle) * radius);
+      }
+      c5.fillStyle = "gold";
+      c5.fill();
     }
-    c5.fillStyle = "gold";
-    c5.fill();
-  }
-  star(20, 20);
+    star(20, 20);
   </script>
+
+
+  <p>Pie Chart</p>
+
+  <canvas id="pieChart" width="600" height="300"></canvas>
+  <script>
+    function labledPieChart() {
+      const results = [
+        { name: "Satisfied", count: 1043, color: "lightblue" },
+        { name: "Neutral", count: 563, color: "lightgreen" },
+        { name: "unsatisfied", count: 510, color: "pink" },
+        { name: "No comment", count: 175, color: "silver" },
+      ];
+      let cx = document.querySelector("#pieChart").getContext("2d");
+      let total = results.reduce(function (sum, choice) {
+        return sum + choice.count;
+      }, 0);
+
+      let currentAngle = -0.5 * Math.PI;
+      let centerX = 300, centerY = 150;
+
+      results.forEach(function (result) {
+        let sliceAngle = (result.count / total) * 2 * Math.PI;
+        cx.beginPath();
+        cx.arc(centerX, centerY, 100,
+          currentAngle, currentAngle + sliceAngle);
+
+        let middleAngle = currentAngle + 0.5 * sliceAngle;
+        let textX = Math.cos(middleAngle) * 120 + centerX;
+        let textY = Math.sin(middleAngle) * 120 + centerY;
+        cx.textBaseLine = "middle";
+        if (Math.cos(middleAngle) > 0) {
+          cx.textAlign = "left";
+        } else {
+          cx.textAlign = "right";
+        }
+        cx.font = "15px sans-serif";
+        cx.fillStyle = "black";
+        cx.fillText(result.name, textX, textY);
+
+        currentAngle += sliceAngle;
+        cx.lineTo(centerX, centerY);
+        cx.fillStyle = result.color;
+        cx.fill();
+      });
+    }
+
+
+    labledPieChart();
+
+  </script>
+
+
+<canvas id="ball" width="400" height="400"></canvas>
+<script>
+  // Solution. Ran out of patience to do this, but I'll make a point to come back
+  // and write up.revisit anything that gets used later on.
+  let cBall = document.querySelector("#ball").getContext("2d");
+
+  let lastTime = null;
+  function frame(time) {
+    if (lastTime != null) {
+      updateAnimation(Math.min(100, time - lastTime) / 1000);
+    }
+    lastTime = time;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  let x = 100, y = 300;
+  let radius = 10;
+  let speedX = 100, speedY = 60;
+
+  function updateAnimation(step) {
+    cBall.clearRect(0, 0, 400, 400);
+    cBall.strokeStyle = "blue";
+    cBall.lineWidth = 4;
+    cBall.strokeRect(25, 25, 350, 350);
+
+    x += step * speedX;
+    y += step * speedY;
+    if (x < 25 + radius || x > 375 - radius) speedX = -speedX;
+    if (y < 25 + radius || y > 375 - radius) speedY = -speedY;
+    cBall.fillStyle = "red";
+    cBall.beginPath();
+    cBall.arc(x, y, radius, 0, 7);
+    cBall.fill();
+  }
+</script>
 </body>
 
 </html>

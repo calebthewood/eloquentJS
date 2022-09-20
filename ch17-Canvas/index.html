@@ -31,7 +31,7 @@
   <script>
     let canvas = document.querySelector("canvas");
     let context = canvas.getContext("2d");
-    // context.fillStyle = "red";
+    context.fillStyle = "red";
     context.fillRect(10, 10, 100, 50);
   </script>
 
@@ -44,6 +44,7 @@
   <script>
     let cx1 = document.querySelector("#stroke").getContext("2d");
     cx1.strokeStyle = "blue";
+                // x, y, H,  W
     cx1.strokeRect(5, 5, 50, 50);
     cx1.lineWidth = 5;
     cx1.strokeRect(120, 5, 50, 50);
