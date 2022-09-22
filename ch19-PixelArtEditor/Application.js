@@ -2,7 +2,7 @@
 
 class PixelEditor {
   constructor(state, config) {
-    let { tools, controls, dispatch } = config;
+    let {tools, controls, dispatch} = config;
     this.state = state;
 
     this.canvas = new PictureCanvas(state.picture, pos => {
@@ -13,10 +13,10 @@ class PixelEditor {
     this.controls = controls.map(
       Control => new Control(state, config));
     this.dom = elt("div", {}, this.canvas.dom, elt("br"),
-      ...this.controls.reduce((a, c) => a.concat(" ", c.dom), []));
+                   ...this.controls.reduce(
+                     (a, c) => a.concat(" ", c.dom), []));
   }
-
-  syncSate(state) {
+  syncState(state) {
     this.state = state;
     this.canvas.syncState(state.picture);
     for (let ctrl of this.controls) ctrl.syncState(state);
@@ -24,14 +24,26 @@ class PixelEditor {
 }
 
 class ToolSelect {
-  constructor(state, { tools, dispatch }) {
+  constructor(state, {tools, dispatch}) {
     this.select = elt("select", {
-      onchange: () => dispatch({ tool: this.select.value })
+      onchange: () => dispatch({tool: this.select.value})
     }, ...Object.keys(tools).map(name => elt("option", {
       selected: name == state.tool
     }, name)));
     this.dom = elt("label", null, "🖌 Tool: ", this.select);
   }
   syncState(state) { this.select.value = state.tool; }
+}
+
+class ColorSelect {
+  constructor(state, {dispatch}) {
+    this.input = elt("input", {
+      type: "color",
+      value: state.color,
+      onchange: () => dispatch({color: this.input.value})
+    });
+    this.dom = elt("label", null, "🎨 Color: ", this.input);
+  }
+  syncState(state) { this.input.value = state.color; }
 }
 

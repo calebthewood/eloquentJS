@@ -1,21 +1,6 @@
 "use strict";
 
-/* ******************************************* Utility Functions */
-function updateState(state, action) {
-  return { ...state, ...action };
-}
-
-function elt(type, props, ...children) {
-  let dom = document.createElement(type);
-  if (props) Object.assign(dom, props); // try dom = {dom, ...props}
-  for (let child of children) {
-    if (typeof child != "string") dom.appendChild(child);
-    else dom.appendChild(document.createTextNode(child));
-  }
-  return dom;
-}
-
-/* **************************************** End Utility Functions */
+/* *************************************** State */
 class Picture {
   constructor(width, height, pixels) {
     this.width = width;
@@ -41,9 +26,39 @@ class Picture {
   }
 }
 
+function updateState(state, action) {
+  return Object.assign({}, state, action); //{ ...state, ...action };
+}
 
-/* *************************************** Event Listeners */
+
+function elt(type, props, ...children) {
+  let dom = document.createElement(type);
+  if (props) Object.assign(dom, props); // try dom = {dom, ...props}
+  for (let child of children) {
+    if (typeof child != "string") dom.appendChild(child);
+    else dom.appendChild(document.createTextNode(child));
+  }
+  return dom;
+}
+
+/* *************************************** Event Listeners & Initialization */
 
 document.body.appendChild(elt("button", {
   onClick: () => console.log("click")
 }, "The button"));
+
+let state = {
+  tool: "draw",
+  color: "#000000",
+  picture: Picture.empty(60, 30, "#f0f0f0")
+};
+
+let app = new PixelEditor(state, {
+  tools: {draw, fill, rectangle, pick},
+  controls: [ToolSelect, ColorSelect],
+  dispatch(action) {
+    state = updateState(state, action);
+    app.syncState(state);
+  }
+});
+document.querySelector("div").appendChild(app.dom);
