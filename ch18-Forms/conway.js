@@ -60,54 +60,53 @@ class Board {
     for (let i = 0; i < lenRow; i++) {
       row = document.createElement("tr");
       for (let j = 0; j < lenCol; j++) {
-        //build the checkbox
-        checkBox = document.createElement("input");
-        checkBox.type = "checkbox";
-        checkBox.classList.add(`x${j}-y${i}`);
-        checkBox.checked = !!this.board[j][i]; // !! coerces value to boolean
+        // build the checkbox per exercise instructions
+        // checkBox = document.createElement("input");
+        // checkBox.type = "checkbox";
+        // checkBox.classList.add(`x${j}-y${i}`);
+        // checkBox.checked = !!this.board[j][i]; // !! coerces value to boolean
         // build the cell
         cell = document.createElement("td");
-        cell.class = `x${j}-j${i}`;
-        cell.appendChild(checkBox);
+        cell.id = `x${j}-j${i}`;
+        cell.classList.add(this.board[i][j] ? "alive" : "dead")
+        // cell.appendChild(checkBox);
         row.appendChild(cell);
       }
       table.appendChild(row);
     }
 
-    let button = document.createElement("button");
-    button.innerText = "Next Round";
-    button.addEventListener("click", () => this.advanceRound());
-
-
+    // let button = document.createElement("button");
+    // button.innerText = "Next Round";
+    // button.addEventListener("click", () => this.advanceRound());
     GAME_OF_LIFE.appendChild(table);
     GAME_OF_LIFE.append(button);
   }
 
   advanceRound() {
     const output = [];
-    const iLen = this.board.length;
-    const jLen = this.board.length;
+    const lenCol = this.board[0].length;
+    const lenRow = this.board.length;
     let N, NW, NE, S, SW, SE, E, W; // initialize neighbor cells
     let sum;
     let row;
 
-    for (let i = 0; i < iLen; i++) {
+    for (let i = 0; i < lenRow; i++) {
       row = [];
-      for (let j = 0; j < jLen; j++) {
-        let cell = this.board[j][i];
+      for (let j = 0; j < lenCol; j++) {
+        let cell = this.board[i][j];
         /* is garbage, but It was tenable when I thought I only
         had to deal with NSEW. I would change to some kind of adjaceny matrix
         or something more sophisticated. assumes no neighbor = 0. */
         N = i > 0 ? this.board[i - 1][j] : 0;
         NW = i > 0 && j > 0 ? this.board[i - 1][j - 1] : 0;
-        NE = i > 0 && j < jLen - 1 ? this.board[i - 1][j + 1] : 0;
-        S = i < iLen - 1 ? this.board[i + 1][j] : 0;
-        SW = i < iLen - 1 && j > 0 ? this.board[i + 1][j - 1] : 0;
-        SE = i < iLen - 1 && j < jLen - 1 ? this.board[i + 1][j + 1] : 0;
-        E = j < jLen - 1 ? this.board[i][j + 1] : 0;
+        NE = i > 0 && j < lenCol - 1 ? this.board[i - 1][j + 1] : 0;
+        S = i < lenRow - 1 ? this.board[i + 1][j] : 0;
+        SW = i < lenRow - 1 && j > 0 ? this.board[i + 1][j - 1] : 0;
+        SE = i < lenRow - 1 && j < lenCol - 1 ? this.board[i + 1][j + 1] : 0;
+        E = j < lenCol - 1 ? this.board[i][j + 1] : 0;
         W = j > 0 ? this.board[i][j - 1] : 0;
         sum = N + NW + NE + S + SW + SE + E + W;
-        console.log(sum);
+
         if (cell) {
           if (sum < 2 || sum > 3) {
             row.push(0);
@@ -127,7 +126,6 @@ class Board {
       output.push(row);
     };
     this.board = output;
-    console.log(this.board);
     this.drawBoard();
   }
 }
@@ -139,7 +137,9 @@ class Board {
 */
 
 let start = new Board();
-start.initialize(20, 20);
-start.drawBoard();
+start.initialize(83, 151);
+
+
+setInterval(() => start.advanceRound(), 250);
 
 
