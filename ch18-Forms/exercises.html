@@ -8,8 +8,26 @@
 </head>
 <body>
 
+<!-- Exercise #1: I did it in Insomnia, but his is a neat solution -->
+<script>
+  const url = "https://eloquentjavascript.net/author";
+const types = ["text/plain",
+               "text/html",
+               "application/json",
+               "application/rainbows+unicorns"];
+
+async function showTypes() {
+  for (let type of types) {
+    let resp = await fetch(url, {headers: {accept: type}});
+    console.log(`${type}: ${await resp.text()}\n`);
+  }
+}
+
+showTypes();
+</script>
 
 
+<!-- Exercise #2 JavaScript Work Bench -->
 <textarea id="code">return "hi";</textarea>
 <button id="button">Run</button>
 <pre id="output"></pre>
@@ -21,6 +39,24 @@
 
   submit.addEventListener("click", () => {
   	display.textContent = Function(code.textContent)();
+  });
+</script>
+
+<!-- Solution. Slightly better than mine, but not by much! -->
+<textarea id="code">return "hi";</textarea>
+<button id="button">Run</button>
+<pre id="output"></pre>
+
+<script>
+  document.querySelector("#button").addEventListener("click", () => {
+    let code = document.querySelector("#code").value;
+    let outputNode = document.querySelector("#output");
+    try {
+      let result = Function(code)();
+      outputNode.innerText = String(result);
+    } catch (e) {
+      outputNode.innerText = "Error: " + e;
+    }
   });
 </script>
 
