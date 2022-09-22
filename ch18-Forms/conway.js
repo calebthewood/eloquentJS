@@ -55,7 +55,7 @@ class Board {
     const table = document.createElement("table");
     let row;
     let cell;
-    let checkBox;
+    // let checkBox;
 
     for (let i = 0; i < lenRow; i++) {
       row = document.createElement("tr");
@@ -97,14 +97,15 @@ class Board {
         /* is garbage, but It was tenable when I thought I only
         had to deal with NSEW. I would change to some kind of adjaceny matrix
         or something more sophisticated. assumes no neighbor = 0. */
-        N = i > 0 ? this.board[i - 1][j] : 0;
-        NW = i > 0 && j > 0 ? this.board[i - 1][j - 1] : 0;
-        NE = i > 0 && j < lenCol - 1 ? this.board[i - 1][j + 1] : 0;
-        S = i < lenRow - 1 ? this.board[i + 1][j] : 0;
-        SW = i < lenRow - 1 && j > 0 ? this.board[i + 1][j - 1] : 0;
-        SE = i < lenRow - 1 && j < lenCol - 1 ? this.board[i + 1][j + 1] : 0;
-        E = j < lenCol - 1 ? this.board[i][j + 1] : 0;
-        W = j > 0 ? this.board[i][j - 1] : 0;
+        N = i > 0 ? this.board[i - 1][j] : this.board[lenRow - 1][j];
+        NW = i > 0 && j > 0 ? this.board[i - 1][j - 1] : this.board[lenRow - 1][j - 1];
+        NE = i > 0 && j < lenCol - 1 ? this.board[i - 1][j + 1] : this.board[lenRow - 1][j + 1];
+        S = i < lenRow - 1 ? this.board[i + 1][j] : this.board[0][j];
+        SW = i < lenRow - 1 && j > 0 ? this.board[i + 1][j - 1] : this.board[0][j - 1];
+        SE = i < lenRow - 1 && j < lenCol - 1 ? this.board[i + 1][j + 1] : this.board[0][j + 1];
+        E = j < lenCol ? this.board[i][j + 1] : this.board[i][lenCol - 1];
+        W = j > 0 ? this.board[i][j - 1] : this.board[i][0];
+
         sum = N + NW + NE + S + SW + SE + E + W;
 
         if (cell) {
@@ -137,9 +138,9 @@ class Board {
 */
 
 let start = new Board();
-start.initialize(83, 151);
+start.initialize(80, 150);
 
 
-setInterval(() => start.advanceRound(), 250);
+setInterval(() => start.advanceRound(), 150);
 
 
