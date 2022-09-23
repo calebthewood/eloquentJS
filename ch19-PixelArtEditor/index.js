@@ -54,7 +54,7 @@ let state = {
 };
 
 let app = new PixelEditor(state, {
-  tools: {draw, fill, rectangle, pick},
+  tools: { draw, fill, rectangle, pick },
   controls: [ToolSelect, ColorSelect],
   dispatch(action) {
     state = updateState(state, action);
