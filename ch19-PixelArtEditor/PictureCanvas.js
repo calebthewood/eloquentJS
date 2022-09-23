@@ -2,15 +2,23 @@
 
 const SCALE = 10;
 
-function drawPicture(picture, canvas, scale) {
-  canvas.width = picture.width * scale;
-  canvas.height = picture.height * scale;
-  let cx = canvas.getContext("2d");
+function drawPicture(picture, canvas, scale, previous) {
+  if (previous == null ||
+      previous.width != picture.width ||
+      previous.height != picture.height) {
+    canvas.width = picture.width * scale;
+    canvas.height = picture.height * scale;
+    previous = null;
+  }
 
+  let cx = canvas.getContext("2d");
   for (let y = 0; y < picture.height; y++) {
     for (let x = 0; x < picture.width; x++) {
-      cx.fillStyle = picture.pixel(x, y);
-      cx.fillRect(x * scale, y * scale, scale, scale);
+      let color = picture.pixel(x, y);
+      if (previous == null || previous.pixel(x, y) != color) {
+        cx.fillStyle = color;
+        cx.fillRect(x * scale, y * scale, scale, scale);
+      }
     }
   }
 }
@@ -23,11 +31,12 @@ class PictureCanvas {
     });
     this.syncState(picture);
   }
-  syncState(picture) {
-    if (this.picture == picture) return;
-    this.picture = picture;
-    drawPicture(this.picture, this.dom, SCALE);
-  }
+}
+
+PictureCanvas.prototype.syncState = function(picture) {
+  if (this.picture == picture) return;
+  drawPicture(picture, this.dom, SCALE, this.picture);
+  this.picture = picture;
 }
 
 PictureCanvas.prototype.mouse = function (downEvent, onDown) {
