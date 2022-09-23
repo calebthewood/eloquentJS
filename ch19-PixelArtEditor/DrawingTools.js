@@ -14,15 +14,15 @@ function drawLine(from, to, color) {
   if (Math.abs(from.x - to.x) > Math.abs(from.y - to.y)) {
     if (from.x > to.x) [from, to] = [to, from];
     let slope = (to.y - from.y) / (to.x - from.x);
-    for (let {x, y} = from; x <= to.x; x++) {
-      points.push({x, y: Math.round(y), color});
+    for (let { x, y } = from; x <= to.x; x++) {
+      points.push({ x, y: Math.round(y), color });
       y += slope;
     }
   } else {
     if (from.y > to.y) [from, to] = [to, from];
     let slope = (to.x - from.x) / (to.y - from.y);
-    for (let {x, y} = from; y <= to.y; y++) {
-      points.push({x: Math.round(x), y, color});
+    for (let { x, y } = from; y <= to.y; y++) {
+      points.push({ x: Math.round(x), y, color });
       x += slope;
     }
   }
@@ -32,7 +32,7 @@ function drawLine(from, to, color) {
 function line(pos, state, dispatch) {
   return end => {
     let line = drawLine(pos, end, state.color);
-    dispatch({picture: state.picture.draw(line)});
+    dispatch({ picture: state.picture.draw(line) });
   };
 }
 
@@ -56,8 +56,10 @@ function rectangle(start, state, dispatch) {
 
 function circle(pos, state, dispatch) {
   function drawCircle(to) {
-    let radius = Math.sqrt(Math.pow(to.x - pos.x, 2) +
-                           Math.pow(to.y = pos.y, 2));
+    let radius = Math.sqrt(
+      Math.pow(to.x - pos.x, 2) +
+      Math.pow(to.y - pos.y, 2)
+      );
     let radiusC = Math.ceil(radius);
     let drawn = [];
     for (let dy = -radiusC; dy <= radiusC; dy++) {
@@ -67,10 +69,10 @@ function circle(pos, state, dispatch) {
         let y = pos.y + dy, x = pos.x + dx;
         if (y < 0 || y >= state.picture.height ||
           x < 0 || x >= state.picture.width) continue;
-          drawn.push({x, y, color: state.color});
+        drawn.push({ x, y, color: state.color });
       }
     }
-    dispatch({picture: state.picture.draw(drawn)});
+    dispatch({ picture: state.picture.draw(drawn) });
   }
   drawCircle(pos);
   return drawCircle;
@@ -97,5 +99,7 @@ function fill({ x, y }, state, dispatch) {
 }
 
 function pick(pos, state, dispatch) {
-  dispatch({color: state.picture.pixel(pos.x, pos.y)});
+  dispatch({ color: state.picture.pixel(pos.x, pos.y) });
 }
+
+// export { draw, line, rectangle, circle, fill, pick };
