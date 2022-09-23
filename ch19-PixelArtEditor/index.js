@@ -27,7 +27,7 @@ class Picture {
 }
 
 function updateState(state, action) {
-  return Object.assign({}, state, action); //{ ...state, ...action };
+  return { ...state, ...action }; //Object.assign({}, state, action);
 }
 
 
@@ -47,18 +47,34 @@ document.body.appendChild(elt("button", {
   onClick: () => console.log("click")
 }, "The button"));
 
-let state = {
+let startState = {
   tool: "draw",
   color: "#000000",
-  picture: Picture.empty(60, 30, "#f0f0f0")
+  picture: Picture.empty(60, 30, "#f0f0f0"),
+  done: [],
+  doneAt: 0,
 };
 
-let app = new PixelEditor(state, {
-  tools: { draw, fill, rectangle, pick },
-  controls: [ToolSelect, ColorSelect],
-  dispatch(action) {
-    state = updateState(state, action);
-    app.syncState(state);
-  }
-});
-document.querySelector("div").appendChild(app.dom);
+const baseTools = { draw, fill, rectangle, pick };
+
+const baseControls = [
+  ToolSelect, ColorSelect, SaveButton, LoadButton, UndoButton
+];
+
+function startPixelEditor({
+                      state = startState,
+                      tools = baseTools,
+                      controls = baseControls }) {
+  let app = new PixelEditor(state, {
+    tools,
+    controls,
+    dispatch(action) {
+      state = historyUpdateState(state, action);
+      app.syncState(state);
+    }
+  });
+  return app.dom;
+}
+
+
+document.querySelector("div").appendChild(startPixelEditor({}));
