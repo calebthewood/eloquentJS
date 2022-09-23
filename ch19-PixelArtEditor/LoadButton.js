@@ -37,7 +37,7 @@ function pictureFromImage(image) {
   let width = Math.min(100, image.width);
   let height = Math.min(100, image.height);
   let canvas = elt("canvas", {width, height});
-  cx = canvas.getContext("2d")
+  let cx = canvas.getContext("2d")
   cx.drawImage(image, 0, 0);
   let pixels = [];
   let {data} = cx.getImageData(0, 0, width, height);
