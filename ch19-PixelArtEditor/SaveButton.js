@@ -4,7 +4,7 @@ class SaveButton {
   constructor(state) {
     this.picture = state.picture;
     this.dom = elt("button", {
-      onclick: () => this.save()
+      onclick: () => this.save(),
     }, "💾 Save");
   }
   save() {
