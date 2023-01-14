@@ -4,7 +4,7 @@
 
 
 ## Chapter Summaries
-I completed chapters 1-4 before starting this repository. My notes and work are lost to the confines of an old laptop, but I may revisit the next time I brush up on the fundamentals.
+I completed chapters 1-4 before starting this repository. My notes and work are lost to the hd of an old laptop, but I like revisiting this book from time to time and add them to the repo the next time I brush up on my fundamentals.
 
 ### Part 1: Language
 1. Values, Types, and Operators
@@ -28,16 +28,26 @@ I completed chapters 1-4 before starting this repository. My notes and work are 
 10. Modules
 - In this chapter I learned about ES6 modules, npm Packages, CommonJS modules, Building, Bundling, and Dependencies.
 11. Asynchronous Programming
--
+- In this chapter I learned about Threading, Multithreading, Synchronous/Asynchronous code, Networks, Network Flooding, Network Failure, Message Routing, ES6 Async-Await, Callbacks, Promises, Generators, the Event Loop, and common async bugs.
 12. Project: A Programming Language
+- This chapter takes a deep dive and walks you through building a custom programming language. It walks through the basics of Parsing, Evaluating, Environments, Functions, and Compilation. It's one that benefits from multiple passes!
 ### Part 2: Browser
 13. JavaScript and the Browser
+- This chapter covers the browser wars, the development of the internet, and basically why the web is the way it is. It explains HTML, JSON, Browser Compatability, and the sandboxed nature of the browser.
 14. The Document Object Model
+- In this chapter I covered the DOM structure, Trees more generally, standards, finding nodes, changing the DOM, Attributes, Layout, Styling, CSS, Query Selectors, Positioning, Animating. This is the first part of the book where you start building what could be called a website.
 15. Handling Events
+- Here I learned all about using Javascript to handle events and add a level of interactivity. Topics included: Event Object, Propagation, Default Behaviors, Key Events, Pointer Events, Touch Events, Scroll Events, Focus Events, Load Events, Timers, the Event Loop, and Debouncing.
 16. Project: A Platform Game
+- The shockingly intricate process of making a 2D platform game in the browser. I took a primarily Object Oriented approach to coding this. I wrote classes for the player, the level itself, game state, lava, monsters, coins, a vector class to handle movement. There were functions for drawing the level based on a string input, and a very simple motion and collision system. This was tough, but I loved every minute of it.
 17. Drawing on Canvas
+- This chapter covered the Canvas element and drawing in 2D. It covered all the basics including Paths, Curves, Arcs, Text, Images, Transformations, and provided an intro to other tools like SVG and plain HTML. By the end I had even drawn new art for the last chapter's game.
 18. HTTP and Forms
+- This chapter returned to web and browser fundamentals such as HTTP, TCP, IP, Fetching, CORS, Security, HTTPS, Form Fields, Focus, Disabled Fields, File Fields, and Client-Side Storage.
 19. Project: A Pixel Art Editor
+- This chapter provided another big project that builds on all the perevious experience. A Pixel Art Editor. By the end of the chapter I had built an editor capable for drawing lines and shapes in different colors. It can also save images, load images, edit images, and had a basic 'undo' feature. I even built in hotkeys!
 ### Part 3: Node
 20. Node.js
+- This chapter covers Javascript in the Node environment. It revisits npm and Packages, versioning, File System module, HTTP module, Streams, File Servers, and some command line basics. #grep
 21. Project: Skill-Sharing Website
+I haven't done the last chapter yet, but I intend to! By the time I finished the book, I'd built several big fullstack websites as a part of my full stack bootcamp and the skills seemed redundant as I entered the job search. I do love the author's detailed style and thougtful examples so I plan on coming back to 100% it.
