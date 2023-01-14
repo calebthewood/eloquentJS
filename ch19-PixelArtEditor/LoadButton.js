@@ -36,11 +36,11 @@ function finishLoad(file, dispatch) {
 function pictureFromImage(image) {
   let width = Math.min(100, image.width);
   let height = Math.min(100, image.height);
-  let canvas = elt("canvas", {width, height});
-  let cx = canvas.getContext("2d")
+  let canvas = elt("canvas", { width, height });
+  let cx = canvas.getContext("2d");
   cx.drawImage(image, 0, 0);
   let pixels = [];
-  let {data} = cx.getImageData(0, 0, width, height);
+  let { data } = cx.getImageData(0, 0, width, height);
 
   function hex(n) {
     return n.toString(16).padStart(2, "0");
@@ -51,3 +51,5 @@ function pictureFromImage(image) {
   }
   return new Picture(width, height, pixels);
 }
+
+// export { LoadButton };

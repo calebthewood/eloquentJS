@@ -1,4 +1,10 @@
 "use strict";
+// import { historyUpdateState, UndoButton } from "./UndoButton";
+// import { draw, line, rectangle, circle, fill, pick } from "./DrawingTools";
+// import { PixelEditor, ToolSelect, ColorSelect } from "./Application";
+// import { LoadButton } from "./LoadButton";
+// import { SaveButton } from "./SaveButton";
+
 
 /* *************************************** State */
 class Picture {
@@ -62,9 +68,9 @@ const baseControls = [
 ];
 
 function startPixelEditor({
-                      state = startState,
-                      tools = baseTools,
-                      controls = baseControls }) {
+  state = startState,
+  tools = baseTools,
+  controls = baseControls }) {
   let app = new PixelEditor(state, {
     tools,
     controls,

@@ -4,8 +4,8 @@ const SCALE = 10;
 
 function drawPicture(picture, canvas, scale, previous) {
   if (previous == null ||
-      previous.width != picture.width ||
-      previous.height != picture.height) {
+    previous.width != picture.width ||
+    previous.height != picture.height) {
     canvas.width = picture.width * scale;
     canvas.height = picture.height * scale;
     previous = null;
@@ -33,11 +33,11 @@ class PictureCanvas {
   }
 }
 
-PictureCanvas.prototype.syncState = function(picture) {
+PictureCanvas.prototype.syncState = function (picture) {
   if (this.picture == picture) return;
   drawPicture(picture, this.dom, SCALE, this.picture);
   this.picture = picture;
-}
+};
 
 PictureCanvas.prototype.mouse = function (downEvent, onDown) {
   if (downEvent.button != 0) return;
@@ -84,3 +84,4 @@ PictureCanvas.prototype.touch = function (startEvent, onDown) {
   this.dom.addEventListener("touchend", end);
 };
 
+// export { PictureCanvas };

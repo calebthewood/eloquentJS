@@ -22,7 +22,7 @@ function maxSubArray(numbers) {
   return maxSum
 }
 
-https://leetcode.com/problems/merge-two-sorted-lists/
+//https://leetcode.com/problems/merge-two-sorted-lists/
 
 
 /*

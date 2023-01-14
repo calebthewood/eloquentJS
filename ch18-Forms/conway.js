@@ -138,7 +138,7 @@ class Board {
 */
 
 let start = new Board();
-start.initialize(80, 150);
+start.initialize(50, 100);
 
 
 setInterval(() => start.advanceRound(), 150);

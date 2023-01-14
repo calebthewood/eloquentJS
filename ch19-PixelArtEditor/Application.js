@@ -1,5 +1,5 @@
 "use strict";
-
+// import { PictureCanvas } from "./PictureCanvas.js";
 class PixelEditor {
   constructor(state, config) {
     let { tools, controls, dispatch } = config;
@@ -65,3 +65,5 @@ class ColorSelect {
   }
   syncState(state) { this.input.value = state.color; }
 }
+
+// export { PixelEditor, ToolSelect, ColorSelect };

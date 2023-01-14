@@ -20,3 +20,5 @@ class SaveButton {
   }
   syncState(state) { this.picture = state.picture; }
 }
+
+// export { SaveButton }
