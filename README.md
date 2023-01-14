@@ -1,6 +1,30 @@
-# eloquentJS
+### A repo for projects and algorithms from
+#  [Eloquent JavaScript](https://eloquentjavascript.net/)
 
-## A repo for projects and algorithms inspired by playing around with [Eloquent JavaScript](https://eloquentjavascript.net/)
+
+## Two Highlights, Pixel Art Editor and Platform Game
+
+
+<table><tr><tc>
+<img src='./public/pixel-art.png' width='250px'>
+
+### Pixel Art Editor
+- [Click to see video of the game in action](https://twitter.com/CalebtheWood/status/1573384018569183233)
+- [Click to see the source code](https://github.com/calebthewood/eloquentJS/blob/main/ch17-Game/scripts/game.js)
+
+
+
+</tc><tc>
+<img src='./public/platform-game.png' width='250px'>
+
+### Platform Game
+- [Click to see video of the game in action](https://twitter.com/CalebtheWood/status/1571228695385481216)
+- [Click to see the source code](https://github.com/calebthewood/eloquentJS/blob/main/ch17-Game/scripts/game.js)
+
+
+</tc></tr></table>
+
+
 
 
 ## Chapter Summaries
