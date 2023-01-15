@@ -2,35 +2,33 @@
 #  [Eloquent JavaScript](https://eloquentjavascript.net/)
 
 
-## Two Highlights, Pixel Art Editor and Platform Game
+## Project Highlights
 
 
-<table><tr><tc>
-<img src='./public/pixel-art.png' width='250px'>
+<table><tbody><tr><td>
+<img src='./public/pixel-art.png' height='250px'>
 
 ### Pixel Art Editor
-- [Click to see video of the game in action](https://twitter.com/CalebtheWood/status/1573384018569183233)
+- [Click to see video](https://twitter.com/CalebtheWood/status/1573384018569183233)
 - [Click to see the source code](https://github.com/calebthewood/eloquentJS/blob/main/ch17-Game/scripts/game.js)
 
+</td><td>
 
-
-</tc><tc>
-<img src='./public/platform-game.png' width='250px'>
+<img src='./public/platform-game.png' height='250px'>
 
 ### Platform Game
-- [Click to see video of the game in action](https://twitter.com/CalebtheWood/status/1571228695385481216)
-- [Click to see the source code](https://github.com/calebthewood/eloquentJS/blob/main/ch17-Game/scripts/game.js)
+- [Click to see video](https://twitter.com/CalebtheWood/status/1571228695385481216)
+- [Click to see the source code](https://github.com/calebthewood/eloquentJS/blob/main/ch19-PixelArtEditor/index.js)
+
+</td></tr></tbody></table>
 
 
-</tc></tr></table>
 
 
+# Chapter Summaries
+I completed chapters 1-4 before starting this repository. My notes and work are lost to the hd of an old laptop, but I like revisiting this book from time to time so who knows, I might add them to the repo the next time I brush up on my fundamentals.
 
-
-## Chapter Summaries
-I completed chapters 1-4 before starting this repository. My notes and work are lost to the hd of an old laptop, but I like revisiting this book from time to time and add them to the repo the next time I brush up on my fundamentals.
-
-### Part 1: Language
+## Part 1: Language
 1. Values, Types, and Operators
 - Review on fundamental concepts: Booleans, Logical Operators, Unary Operators, short-circuiting, etc.
 2. Program Structure
@@ -55,7 +53,7 @@ I completed chapters 1-4 before starting this repository. My notes and work are 
 - In this chapter I learned about Threading, Multithreading, Synchronous/Asynchronous code, Networks, Network Flooding, Network Failure, Message Routing, ES6 Async-Await, Callbacks, Promises, Generators, the Event Loop, and common async bugs.
 12. Project: A Programming Language
 - This chapter takes a deep dive and walks you through building a custom programming language. It walks through the basics of Parsing, Evaluating, Environments, Functions, and Compilation. It's one that benefits from multiple passes!
-### Part 2: Browser
+## Part 2: Browser
 13. JavaScript and the Browser
 - This chapter covers the browser wars, the development of the internet, and basically why the web is the way it is. It explains HTML, JSON, Browser Compatability, and the sandboxed nature of the browser.
 14. The Document Object Model
@@ -70,7 +68,7 @@ I completed chapters 1-4 before starting this repository. My notes and work are 
 - This chapter returned to web and browser fundamentals such as HTTP, TCP, IP, Fetching, CORS, Security, HTTPS, Form Fields, Focus, Disabled Fields, File Fields, and Client-Side Storage.
 19. Project: A Pixel Art Editor
 - This chapter provided another big project that builds on all the perevious experience. A Pixel Art Editor. By the end of the chapter I had built an editor capable for drawing lines and shapes in different colors. It can also save images, load images, edit images, and had a basic 'undo' feature. I even built in hotkeys!
-### Part 3: Node
+## Part 3: Node
 20. Node.js
 - This chapter covers Javascript in the Node environment. It revisits npm and Packages, versioning, File System module, HTTP module, Streams, File Servers, and some command line basics. #grep
 21. Project: Skill-Sharing Website
